@@ -50,18 +50,17 @@
     "hard": 40
   },
   "by_domain": {
-    "cs.CL": 324,
-    "cs.IR": 31,
-    "cs.CV": 16,
+    "cs.CL": 326,
+    "cs.IR": 30,
+    "cs.CV": 15,
     "cs.AI": 14,
-    "cs.LG": 7,
+    "cs.LG": 6,
     "cs.DL": 4,
-    "cs.SD": 2,
+    "cs.SD": 3,
     "cs.HC": 2
   },
   "by_status": {
-    "draft": 398,
-    "needs_review": 2
+    "draft": 400
   },
   "normal_candidates_pool": 286,
   "normal_dropped": 36,
@@ -85,6 +84,7 @@
     "ids_that_now_exist": [],
     "titles_that_now_exist": [],
     "errors": [],
-    "titles_unverified": []
+    "titles_unverified": [],
+    "note": "T1 记录未变，沿用上一轮向 arXiv 的独立复核结果"
   }
 }
