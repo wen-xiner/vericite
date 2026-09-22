@@ -9,10 +9,13 @@ __pycache__/
 venv/
 env/
 
-# 数据与模型（体积大，不入库）
+# 数据与模型
+# 语料元数据体积小（约 250K）且是评测集引用的依据，入库以保证可核验；
+# data/raw/ 是 arXiv 原始响应缓存，可由 fetch_arxiv.py 重新拉取，不入库。
 data/*
-corpus/*
 !data/.gitkeep
+!data/arxiv_raw.jsonl
+corpus/*
 !corpus/.gitkeep
 *.bin
 *.faiss
@@ -24,6 +27,12 @@ corpus/*
 experiments/runs/
 *.log
 
+# 构建脚本的断点/进度文件（可再生产物，不入库）
+eval/v1/.*
+*.tmp
+
+# 注意：eval/ 下的评测集是核心资产，必须入库，不要加进忽略规则
+
 # IDE / 系统
 .idea/
 .vscode/
@@ -33,3 +42,6 @@ Thumbs.db
 # 密钥
 .env
 *.key
+
+# 工作记忆/会话数据（本地产物，不入库）
+.workbuddy/
