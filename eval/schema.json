@@ -99,7 +99,19 @@
     "status": {
       "type": "string",
       "enum": ["draft", "needs_review", "reviewed", "rejected"],
-      "description": "质量状态。draft=机器生成未复核；needs_review=机器校验未通过、必须人工复核；reviewed=人工复核通过、可计入正式实验；rejected=抽检不通过已废弃。"
+      "description": "质量状态。draft=机器生成未复核；needs_review=机器校验未通过、必须人工复核；reviewed=人工抽检通过、可计入正式实验；rejected=抽检不通过已废弃。注意：只有被抽检到且判「通过」的题才是 reviewed，未被抽检到的题保持 draft，但这不代表不可用——全 400 条均通过程序化校验。"
+    },
+    "review": {
+      "type": ["object", "null"],
+      "description": "人工抽检结论。仅被抽检到的题目才有此字段，未抽检的为 null。论文中「人工抽检通过率」只能基于有此字段的题目计算，不得表述为「全部题目经过人工复核」。",
+      "properties": {
+        "verdict": { "type": "string", "enum": ["通过", "修改", "废弃"] },
+        "needs_edit": { "type": "boolean", "description": "判「修改」时为 true，表示需小改后才可用。" },
+        "note": { "type": ["string", "null"], "description": "抽检人写的问题说明或修改意见。" },
+        "reviewer": { "type": "string" },
+        "round": { "type": "integer", "description": "抽检轮次。" },
+        "date": { "type": "string" }
+      }
     },
     "created": { "type": "string", "description": "生成日期 YYYY-MM-DD。" },
     "notes": { "type": ["string", "null"], "description": "存疑点或后续修订备注。" }
@@ -109,6 +121,7 @@
     "question_form", "difficulty", "domain", "trap", "detection_label",
     "expected_behavior", "annotator", "verification", "status", "created", "notes"
   ],
+  "optional": ["review"],
   "label_expectation_by_type": {
     "normal": {
       "existence": "pass", "support": "pass", "traceability": "pass",
