@@ -1,0 +1,35 @@
+# 毕设基准文档（仅本地，不上传）
+毕设大纲基准.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# 数据与模型（体积大，不入库）
+data/*
+corpus/*
+!data/.gitkeep
+!corpus/.gitkeep
+*.bin
+*.faiss
+*.ckpt
+*.pt
+*.onnx
+
+# 实验输出
+experiments/runs/
+*.log
+
+# IDE / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 密钥
+.env
+*.key
