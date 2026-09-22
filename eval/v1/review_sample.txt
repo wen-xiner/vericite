@@ -1,515 +1,1649 @@
 ==============================================================================
-VeriCite 评测集 v1 —— 人工抽检单
+VeriCite 评测集 v1 —— 人工抽检单（阅读用）
 生成日期: 2026-09-22 | 随机种子: 20260922
 抽样 40 条 / 全集 400 条 （10%）
 ==============================================================================
-核对方式：逐条判断「该题是否可用于正式实验」，在【判定】处填 通过 / 修改 / 废弃。
-全部通过率写入论文第 4 章评测集构建小节；不通过的题在 eval/v1/questions.jsonl 中把 status 改为 reviewed / rejected。
+怎么用：
+  1. 逐条读下面的题目、参考答案、依据片段，摘要原文里依据所在行前有 ▸ 标记。
+  2. 判定该题能否用于正式实验，把结果填进 review_sheet.csv 的「判定」列：
+       通过 = 可直接用；修改 = 小改后可用（备注写改什么）；废弃 = 不可用。
+  3. 填完告诉我，我按判定回填 questions.jsonl 的 status（reviewed / rejected）并算通过率。
+判定标准：只要「依据确实支撑答案」且「问题只有唯一解」，即算通过。
 
 ------------------------------------------------------------------------------
 [1/40] N-0123  |  normal  |  numeric  |  难度 easy  |  领域 cs.CL
-【问题】在关于NLP中幻觉的审计研究中，作者对多少篇出版物进行了批判性审查？
-【参考答案】103篇
-【依据片段】using a critical examination of 103 publications across NLP research
-【应引用的真实来源】['2404.07461']
+
+【问题】
+    在关于NLP中幻觉的审计研究中，作者对多少篇出版物进行了批判性审查？
+
+【参考答案】
+    103篇
+
+【依据出处】arXiv:2404.07461 《An Audit on the Perspectives and Challenges of Hallucinations in NLP》
+
+【依据片段】
+    using a critical examination of 103 publications across NLP research
+
+【论文摘要原文（▸ 标出依据所在行）】
+    We audit how hallucination in large language models (LLMs) is
+  ▸ characterized in peer-reviewed literature, using a critical examination of
+  ▸ 103 publications across NLP research. Through the examination of the
+    literature, we identify a lack of agreement with the term `hallucination'
+    in the field of NLP. Additionally, to compliment our audit, we conduct a
+    survey with 171 practitioners from the field of NLP and AI to capture
+    varying perspectives on hallucination. Our analysis calls for the
+    necessity of explicit definitions and frameworks outlining hallucination
+    within NLP, highlighting potential challenges, and our survey inputs
+    provide a thematic understanding of the influence and ramifications of
+    hallucination in society.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [2/40] N-0001  |  normal  |  method  |  难度 medium  |  领域 cs.SD
-【问题】为了构建音乐学领域大语言模型评估的初始基准，论文提出了什么半自动方法？
-【参考答案】论文提出了一种半自动方法，使用检索增强生成模型和多项选择题生成来创建初始基准，并由人类专家验证。
-【依据片段】proposing a semi-automatic method to create an initial benchmark using retrieval-augmented generation models and multiple-choice question generation, validated by human experts.
-【应引用的真实来源】['2409.01864']
+
+【问题】
+    为了构建音乐学领域大语言模型评估的初始基准，论文提出了什么半自动方法？
+
+【参考答案】
+    论文提出了一种半自动方法，使用检索增强生成模型和多项选择题生成来创建初始基准，并由人类专家验证。
+
+【依据出处】arXiv:2409.01864 《The Role of Large Language Models in Musicology: Are We Ready to Trust the Machines?》
+
+【依据片段】
+    proposing a semi-automatic method to create an initial benchmark using
+    retrieval-augmented generation models and multiple-choice question
+    generation, validated by human experts.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    In this work, we explore the use and reliability of Large Language Models
+    (LLMs) in musicology. From a discussion with experts and students, we
+    assess the current acceptance and concerns regarding this, nowadays
+  ▸ ubiquitous, technology. We aim to go one step further, proposing a
+  ▸ semi-automatic method to create an initial benchmark using
+  ▸ retrieval-augmented generation models and multiple-choice question
+  ▸ generation, validated by human experts. Our evaluation on 400
+    human-validated questions shows that current vanilla LLMs are less
+    reliable than retrieval augmented generation from music dictionaries. This
+    paper suggests that the potential of LLMs in musicology requires
+    musicology driven research that can specialized LLMs by including accurate
+    and reliable domain knowledge.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [3/40] N-0105  |  normal  |  factual  |  难度 easy  |  领域 cs.HC
-【问题】在LLM幻觉感知研究中，参与者对真实内容、轻微幻觉和严重幻觉的感知准确性排序是怎样的？用户参与行为是否呈现相同模式？
-【参考答案】参与者将内容真实性排序为：真实内容、轻微幻觉、严重幻觉；用户参与行为也呈现相同模式。
-【依据片段】Participants ranked content as truthful in the order of genuine, minor hallucination, and major hallucination, and user engagement behaviors mirrored this pattern.
-【应引用的真实来源】['2404.03745']
+
+【问题】
+    在LLM幻觉感知研究中，参与者对真实内容、轻微幻觉和严重幻觉的感知准确性排序是怎样的？用户参与行为是否呈现相同模式？
+
+【参考答案】
+    参与者将内容真实性排序为：真实内容、轻微幻觉、严重幻觉；用户参与行为也呈现相同模式。
+
+【依据出处】arXiv:2404.03745 《Fakes of Varying Shades: How Warning Affects Human Perception and Engagement Regarding LLM Hallucinations》
+
+【依据片段】
+    Participants ranked content as truthful in the order of genuine, minor
+    hallucination, and major hallucination, and user engagement behaviors
+    mirrored this pattern.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    The widespread adoption and transformative effects of large language
+    models (LLMs) have sparked concerns regarding their capacity to produce
+    inaccurate and fictitious content, referred to as `hallucinations'. Given
+    the potential risks associated with hallucinations, humans should be able
+    to identify them. This research aims to understand the human perception of
+    LLM hallucinations by systematically varying the degree of hallucination
+    (genuine, minor hallucination, major hallucination) and examining its
+    interaction with warning (i.e., a warning of potential inaccuracies:
+    absent vs. present). Participants (N=419) from Prolific rated the
+    perceived accuracy and engaged with content (e.g., like, dislike, share)
+  ▸ in a Q/A format. Participants ranked content as truthful in the order of
+  ▸ genuine, minor hallucination, and major hallucination, and user engagement
+  ▸ behaviors mirrored this pattern. More importantly, we observed that
+    warning improved the detection of hallucination without significantly
+    affecting the perceived truthfulness of genuine content. We conclude by
+    offering insights for future tools to aid human detection of
+    hallucinations. All survey materials, demographic questions, and
+    post-session questions are available at:
+    https://github.com/MahjabinNahar/fakes-of-varying-shades-survey-materials
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [4/40] N-0115  |  normal  |  numeric  |  难度 easy  |  领域 cs.CL
-【问题】VTG 在多少个数据集和任务上进行了实验，结果如何？
-【参考答案】VTG 在三个知识密集型任务的五个数据集上进行了广泛实验，结果表明 VTG 显著优于基线。
-【依据片段】We conduct extensive experiments on five datasets across three knowledge-intensive tasks and the results reveal that VTG significantly outperforms baselines.
-【应引用的真实来源】['2312.09075']
+
+【问题】
+    VTG在多少个数据集和任务上进行了实验，结果如何？
+
+【参考答案】
+    VTG在三个知识密集型任务的五个数据集上进行了广泛实验，结果表明VTG显著优于基线。
+
+【依据出处】arXiv:2312.09075 《Towards Verifiable Text Generation with Evolving Memory and Self-Reflection》
+
+【依据片段】
+    We conduct extensive experiments on five datasets across three
+    knowledge-intensive tasks and the results reveal that VTG significantly
+    outperforms baselines.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Despite the remarkable ability of large language models (LLMs) in language
+    comprehension and generation, they often suffer from producing factually
+    incorrect information, also known as hallucination. A promising solution
+    to this issue is verifiable text generation, which prompts LLMs to
+    generate content with citations for accuracy verification. However,
+    verifiable text generation is non-trivial due to the focus-shifting
+    phenomenon, the intricate reasoning needed to align the claim with correct
+    citations, and the dilemma between the precision and breadth of retrieved
+    documents. In this paper, we present VTG, an innovative framework for
+    Verifiable Text Generation with evolving memory and self-reflection. VTG
+    introduces evolving long short-term memory to retain both valuable
+    documents and recent documents. A two-tier verifier equipped with an
+    evidence finder is proposed to rethink and reflect on the relationship
+    between the claim and citations. Furthermore, active retrieval and diverse
+    query generation are utilized to enhance both the precision and breadth of
+  ▸ the retrieved documents. We conduct extensive experiments on five datasets
+  ▸ across three knowledge-intensive tasks and the results reveal that VTG
+  ▸ significantly outperforms baselines.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [5/40] N-0048  |  normal  |  method  |  难度 medium  |  领域 cs.CL
-【问题】ANAH-v2 提出的迭代自训练框架基于什么算法？在每次迭代中，该框架的两个主要步骤是什么？
-【参考答案】ANAH-v2 提出的迭代自训练框架基于 Expectation Maximization (EM) 算法。在每次迭代中，框架首先应用一个幻觉标注流水线（hallucination annotation pipeline）来标注一个规模扩大的数据集，然后在该数据集上训练一个更准确的幻觉标注器（hallucination annotator）。
-【依据片段】Based on the Expectation Maximization (EM) algorithm, in each iteration, the framework first applies a hallucination annotation pipeline to annotate a scaled dataset and then trains a more accurate hallucination annotator on the dataset.
-【应引用的真实来源】['2407.04693']
+
+【问题】
+    ANAH-v2提出的迭代自训练框架基于什么算法？在每次迭代中，该框架的两个主要步骤是什么？
+
+【参考答案】
+    ANAH-v2提出的迭代自训练框架基于Expectation Maximization (EM)算法。在每次迭代中，框架首先应用一个幻觉标注流水线（
+    hallucination annotation pipeline）来标注一个规模扩大的数据集，然后在该数据集上训练一个更准确的幻觉标注器（
+    hallucination annotator）。
+
+【依据出处】arXiv:2407.04693 《ANAH-v2: Scaling Analytical Hallucination Annotation of Large Language Models》
+
+【依据片段】
+    Based on the Expectation Maximization (EM) algorithm, in each iteration,
+    the framework first applies a hallucination annotation pipeline to
+    annotate a scaled dataset and then trains a more accurate hallucination
+    annotator on the dataset.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Large language models (LLMs) exhibit hallucinations in long-form
+    question-answering tasks across various domains and wide applications.
+    Current hallucination detection and mitigation datasets are limited in
+    domains and sizes, which struggle to scale due to prohibitive labor costs
+    and insufficient reliability of existing hallucination annotators. To
+    facilitate the scalable oversight of LLM hallucinations, this paper
+    introduces an iterative self-training framework that simultaneously and
+    progressively scales up the hallucination annotation dataset and improves
+  ▸ the accuracy of the hallucination annotator. Based on the Expectation
+  ▸ Maximization (EM) algorithm, in each iteration, the framework first
+  ▸ applies a hallucination annotation pipeline to annotate a scaled dataset
+  ▸ and then trains a more accurate hallucination annotator on the dataset.
+    This new hallucination annotator is adopted in the hallucination
+    annotation pipeline used for the next iteration. Extensive experimental
+    results demonstrate that the finally obtained hallucination annotator with
+    only 7B parameters surpasses the performance of GPT-4 and obtains new
+    state-of-the-art hallucination detection results on HaluEval and HalluQA
+    by zero-shot inference. Such an annotator can not only evaluate the
+    hallucination levels of various LLMs on the large-scale dataset but also
+    help to mitigate the hallucination of LLMs generations, with the Natural
+    Language Inference (NLI) metric increasing from 25% to 37% on HaluEval.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [6/40] N-0242  |  normal  |  method  |  难度 medium  |  领域 cs.IR
-【问题】C$^2$-Cite 框架通过什么机制将引用标记从通用占位符转变为主动知识指针？
-【参考答案】C$^2$-Cite 框架采用上下文引用对齐机制：首先将检索到的文档上下文编码到引用的符号表示中，然后通过从引用路由器函数解码信息来对齐标记编号。该机制使引用标记从通用占位符转变为主动知识指针，链接到被引用的源信息。
-【依据片段】a contextual citation alignment mechanism is adopted: it first encodes the retrieved document contexts into the symbol representation of citations, then aligns the marker numbers by decoding information from a citation router function. This mechanism enables the transformation of citation markers from generic placeholders into active knowledge pointers that link to the referenced source information.
-【应引用的真实来源】['2602.00004']
+
+【问题】
+    C$^2$-Cite框架通过什么机制将引用标记从通用占位符转变为主动知识指针？
+
+【参考答案】
+    C$^2$-Cite框架采用上下文引用对齐机制：首先将检索到的文档上下文编码到引用的符号表示中，然后通过从引用路由器函数解码信息来对齐标记编号。该机
+    制使引用标记从通用占位符转变为主动知识指针，链接到被引用的源信息。
+
+【依据出处】arXiv:2602.00004 《C$^2$-Cite: Contextual-Aware Citation Generation for Attributed Large Language Models》
+
+【依据片段】
+    a contextual citation alignment mechanism is adopted: it first encodes the
+    retrieved document contexts into the symbol representation of citations,
+    then aligns the marker numbers by decoding information from a citation
+    router function. This mechanism enables the transformation of citation
+    markers from generic placeholders into active knowledge pointers that link
+    to the referenced source information.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    The attribution technique enhances the credibility of LLMs by adding
+    citations to the generated sentences, enabling users to trace back to the
+    original sources and verify the reliability of the output. However,
+    existing instruction-tuned attributed LLMs often fail to properly
+    interpret the contextual semantics of citation symbols (e.g., [i]) during
+    text generation. This shortcoming arises from their insufficient awareness
+    of the context information surrounding citation markers, which in turn
+    leads to disjointed references and poor integration of retrieved knowledge
+    into the generated content. To address this issue, we propose a novel
+    \textbf{C}ontextual-aware \textbf{C}itation generation framework
+    (\textbf{C$^2$}-\textbf{Cite}) that explicitly integrates the semantic
+    relationships between citation markers and their referenced content.
+  ▸ Specifically, a contextual citation alignment mechanism is adopted: it
+  ▸ first encodes the retrieved document contexts into the symbol
+  ▸ representation of citations, then aligns the marker numbers by decoding
+  ▸ information from a citation router function. This mechanism enables the
+  ▸ transformation of citation markers from generic placeholders into active
+  ▸ knowledge pointers that link to the referenced source information.
+    Experimental results on the ALCE benchmark across three datasets validate
+    our framework C$^2$-Cite++: it outperforms the SOTA baseline by an average
+    of 5.8\% in citation quality and 17.4\% in response correctness. The
+    implementation is publicly available at https://github.com/BAI-LAB/c2cite
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [7/40] N-0004  |  normal  |  method  |  难度 medium  |  领域 cs.AI
-【问题】通过关联分析研究大语言模型幻觉时，如何根据模型能力分类法识别风险因素，并由此揭示了哪些潜在缺陷？
-【参考答案】通过根据模型能力分类法识别风险因素，揭示了在常识记忆、关系推理和指令遵循方面的一系列潜在缺陷。
-【依据片段】Additionally, by recognizing the risk factors according to a taxonomy of model capability, we reveal a set of potential deficiencies in commonsense memorization, relational reasoning, and instruction following
-【应引用的真实来源】['2309.05217']
+
+【问题】
+    通过关联分析研究大语言模型幻觉时，如何根据模型能力分类法识别风险因素，并由此揭示了哪些潜在缺陷？
+
+【参考答案】
+    通过根据模型能力分类法识别风险因素，揭示了在常识记忆、关系推理和指令遵循方面的一系列潜在缺陷。
+
+【依据出处】arXiv:2309.05217 《Quantifying and Attributing the Hallucination of Large Language Models via Association Analysis》
+
+【依据片段】
+    Additionally, by recognizing the risk factors according to a taxonomy of
+    model capability, we reveal a set of potential deficiencies in commonsense
+    memorization, relational reasoning, and instruction following
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Although demonstrating superb performance on various NLP tasks, large
+    language models (LLMs) still suffer from the hallucination problem, which
+    threatens the reliability of LLMs. To measure the level of hallucination
+    of LLMs, previous works first categorize the hallucination according to
+    the phenomenon similarity, then quantify the proportion that model outputs
+    contain hallucinatory contents. However, such hallucination rates could
+    easily be distorted by confounders. Moreover, such hallucination rates
+    could not reflect the reasons for the hallucination, as similar
+    hallucinatory phenomena may originate from different sources. To address
+    these issues, we propose to combine the hallucination level quantification
+    and hallucination reason investigation through an association analysis,
+    which builds the relationship between the hallucination rate of LLMs with
+    a set of risk factors. In this way, we are able to observe the
+    hallucination level under each value of each risk factor, examining the
+    contribution and statistical significance of each risk factor, meanwhile
+  ▸ excluding the confounding effect of other factors. Additionally, by
+  ▸ recognizing the risk factors according to a taxonomy of model capability,
+  ▸ we reveal a set of potential deficiencies in commonsense memorization,
+  ▸ relational reasoning, and instruction following, which may further provide
+    guidance for the pretraining and supervised fine-tuning process of LLMs to
+    mitigate the hallucination.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [8/40] N-0073  |  normal  |  factual  |  难度 easy  |  领域 cs.CL
-【问题】在针对大语言模型事实性幻觉的系统性实证研究中，作者构建的新幻觉基准叫什么名字？
-【参考答案】HaluEval 2.0
-【依据片段】we construct a new hallucination benchmark HaluEval 2.0
-【应引用的真实来源】['2401.03205']
+
+【问题】
+    在针对大语言模型事实性幻觉的系统性实证研究中，作者构建的新幻觉基准叫什么名字？
+
+【参考答案】
+    HaluEval 2.0
+
+【依据出处】arXiv:2401.03205 《The Dawn After the Dark: An Empirical Study on Factuality Hallucination in Large Language Models》
+
+【依据片段】
+    we construct a new hallucination benchmark HaluEval 2.0
+
+【论文摘要原文（▸ 标出依据所在行）】
+    In the era of large language models (LLMs), hallucination (i.e., the
+    tendency to generate factually incorrect content) poses great challenge to
+    trustworthy and reliable deployment of LLMs in real-world applications. To
+    tackle the LLM hallucination, three key questions should be well studied:
+    how to detect hallucinations (detection), why do LLMs hallucinate
+    (source), and what can be done to mitigate them (mitigation). To address
+    these challenges, this work presents a systematic empirical study on LLM
+    hallucination, focused on the the three aspects of hallucination
+  ▸ detection, source and mitigation. Specially, we construct a new
+  ▸ hallucination benchmark HaluEval 2.0, and designs a simple yet effective
+    detection method for LLM hallucination. Furthermore, we zoom into the
+    different training or utilization stages of LLMs and extensively analyze
+    the potential factors that lead to the LLM hallucination. Finally, we
+    implement and examine a series of widely used techniques to mitigate the
+    hallucinations in LLMs. Our work has led to several important findings to
+    understand the hallucination origin and mitigate the hallucinations in
+    LLMs. Our code and data can be accessed at
+    https://github.com/RUCAIBox/HaluEval-2.0.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [9/40] N-0243  |  normal  |  method  |  难度 medium  |  领域 cs.CL
-【问题】Context-DPO 是什么？它通过什么机制来提升语言模型的上下文忠实性？
-【参考答案】Context-DPO 是首个专门设计用于增强大型语言模型上下文忠实性的对齐方法。它通过直接偏好优化（direct preference optimization）对齐模型，具体是利用 ConFiQA 中提供的上下文对问题的忠实响应和顽固响应（faithful and stubborn responses）来实现。
-【依据片段】To address this, we propose $\textbf{Context-DPO}$, the first alignment method specifically designed to enhance LLMs' context-faithfulness. We introduce $\textbf{ConFiQA}$, a benchmark that simulates Retrieval-Augmented Generation (RAG) scenarios with knowledge conflicts to evaluate context-faithfulness. By leveraging faithful and stubborn responses to questions with provided context from ConFiQA, our Context-DPO aligns LLMs through direct preference optimization.
-【应引用的真实来源】['2412.15280']
+
+【问题】
+    Context-DPO是什么？它通过什么机制来提升语言模型的上下文忠实性？
+
+【参考答案】
+    Context-DPO是首个专门设计用于增强大型语言模型上下文忠实性的对齐方法。它通过直接偏好优化（direct preference
+    optimization）对齐模型，具体是利用ConFiQA中提供的上下文对问题的忠实响应和顽固响应（faithful and stubborn
+    responses）来实现。
+
+【依据出处】arXiv:2412.15280 《Context-DPO: Aligning Language Models for Context-Faithfulness》
+
+【依据片段】
+    To address this, we propose $\textbf{Context-DPO}$, the first alignment
+    method specifically designed to enhance LLMs' context-faithfulness. We
+    introduce $\textbf{ConFiQA}$, a benchmark that simulates
+    Retrieval-Augmented Generation (RAG) scenarios with knowledge conflicts to
+    evaluate context-faithfulness. By leveraging faithful and stubborn
+    responses to questions with provided context from ConFiQA, our Context-DPO
+    aligns LLMs through direct preference optimization.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Reliable responses from large language models (LLMs) require adherence to
+    user instructions and retrieved information. While alignment techniques
+    help LLMs align with human intentions and values, improving
+  ▸ context-faithfulness through alignment remains underexplored. To address
+  ▸ this, we propose $\textbf{Context-DPO}$, the first alignment method
+  ▸ specifically designed to enhance LLMs' context-faithfulness. We introduce
+  ▸ $\textbf{ConFiQA}$, a benchmark that simulates Retrieval-Augmented
+  ▸ Generation (RAG) scenarios with knowledge conflicts to evaluate
+  ▸ context-faithfulness. By leveraging faithful and stubborn responses to
+  ▸ questions with provided context from ConFiQA, our Context-DPO aligns LLMs
+  ▸ through direct preference optimization. Extensive experiments demonstrate
+    that our Context-DPO significantly improves context-faithfulness,
+    achieving 35% to 280% improvements on popular open-source models. Further
+    analysis demonstrates that Context-DPO preserves LLMs' generative
+    capabilities while providing interpretable insights into context
+    utilization. Our code and data are released at
+    https://github.com/byronBBL/Context-DPO
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [10/40] N-0092  |  normal  |  factual  |  难度 easy  |  领域 cs.CL
-【问题】在评估黑盒大语言模型忠实性的研究中，用于评估忠实性的指标是如何定义的？
-【参考答案】该指标通过比较模型生成正确答案所需的关键部分与模型的自解释（self-explanations）来评估忠实性。
-【依据片段】We propose a metric for assessing faithfulness that compares these crucial parts with the self-explanations of the model.
-【应引用的真实来源】['2409.13764']
+
+【问题】
+    在评估黑盒大语言模型忠实性的研究中，用于评估忠实性的指标是如何定义的？
+
+【参考答案】
+    该指标通过比较模型生成正确答案所需的关键部分与模型的自解释（self-explanations）来评估忠实性。
+
+【依据出处】arXiv:2409.13764 《Local Explanations and Self-Explanations for Assessing Faithfulness in black-box LLMs》
+
+【依据片段】
+    We propose a metric for assessing faithfulness that compares these crucial
+    parts with the self-explanations of the model.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    This paper introduces a novel task to assess the faithfulness of large
+    language models (LLMs) using local perturbations and self-explanations.
+    Many LLMs often require additional context to answer certain questions
+    correctly. For this purpose, we propose a new efficient alternative
+    explainability technique, inspired by the commonly used leave-one-out
+    approach. Using this approach, we identify the sufficient and necessary
+  ▸ parts for the LLM to generate correct answers, serving as explanations. We
+  ▸ propose a metric for assessing faithfulness that compares these crucial
+  ▸ parts with the self-explanations of the model. Using the Natural Questions
+    dataset, we validate our approach, demonstrating its effectiveness in
+    explaining model decisions and assessing faithfulness.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [11/40] N-0021  |  normal  |  method  |  难度 medium  |  领域 cs.CL
-【问题】Causal Faithfulness 指标是如何量化自然语言解释对答案支持程度的忠实性的？
-【参考答案】Causal Faithfulness 通过量化自然语言解释与相应模型输出之间的因果归因一致性，作为忠实性的指标。
-【依据片段】Our proposed metric, Causal Faithfulness quantifies the consistency of causal attributions between explanations and the corresponding model outputs as the indicator of faithfulness.
-【应引用的真实来源】['2410.14155']
+
+【问题】
+    Causal Faithfulness指标是如何量化自然语言解释对答案支持程度的忠实性的？
+
+【参考答案】
+    Causal Faithfulness通过量化自然语言解释与相应模型输出之间的因果归因一致性，作为忠实性的指标。
+
+【依据出处】arXiv:2410.14155 《Towards Faithful Natural Language Explanations: A Study Using Activation Patching in Large Language Models》
+
+【依据片段】
+    Our proposed metric, Causal Faithfulness quantifies the consistency of
+    causal attributions between explanations and the corresponding model
+    outputs as the indicator of faithfulness.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Large Language Models (LLMs) are capable of generating persuasive Natural
+    Language Explanations (NLEs) to justify their answers. However, the
+    faithfulness of these explanations should not be readily trusted at face
+    value. Recent studies have proposed various methods to measure the
+    faithfulness of NLEs, typically by inserting perturbations at the
+    explanation or feature level. We argue that these approaches are neither
+    comprehensive nor correctly designed according to the established
+    definition of faithfulness. Moreover, we highlight the risks of grounding
+    faithfulness findings on out-of-distribution samples. In this work, we
+    leverage a causal mediation technique called activation patching, to
+    measure the faithfulness of an explanation towards supporting the
+  ▸ explained answer. Our proposed metric, Causal Faithfulness quantifies the
+  ▸ consistency of causal attributions between explanations and the
+  ▸ corresponding model outputs as the indicator of faithfulness. We
+    experimented across models varying from 2B to 27B parameters and found
+    that models that underwent alignment tuning tend to produce more faithful
+    and plausible explanations. We find that Causal Faithfulness is a
+    promising improvement over existing faithfulness tests by taking into
+    account the model's internal computations and avoiding out of distribution
+    concerns that could otherwise undermine the validity of faithfulness
+    assessments. We release the code in
+    \url{https://github.com/wj210/Causal-Faithfulness}
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [12/40] N-0103  |  normal  |  factual  |  难度 easy  |  领域 cs.CL
-【问题】MedCite 框架在医学任务中引入的核心能力是什么？
-【参考答案】MedCite 是首个端到端框架，用于促进医学任务中基于大语言模型的引文生成的设计与评估。
-【依据片段】we introduce \name, the first end-to-end framework that facilitates the design and evaluation of citation generation with LLMs for medical tasks.
-【应引用的真实来源】['2506.06605']
+
+【问题】
+    MedCite框架在医学任务中引入的核心能力是什么？
+
+【参考答案】
+    MedCite是首个端到端框架，用于促进医学任务中基于大语言模型的引文生成的设计与评估。
+
+【依据出处】arXiv:2506.06605 《MedCite: Can Language Models Generate Verifiable Text for Medicine?》
+
+【依据片段】
+    we introduce \name, the first end-to-end framework that facilitates the
+    design and evaluation of citation generation with LLMs for medical tasks.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Existing LLM-based medical question-answering systems lack citation
+    generation and evaluation capabilities, raising concerns about their
+  ▸ adoption in practice. In this work, we introduce \name, the first
+  ▸ end-to-end framework that facilitates the design and evaluation of
+  ▸ citation generation with LLMs for medical tasks. Meanwhile, we introduce a
+    novel multi-pass retrieval-citation method that generates high-quality
+    citations. Our evaluation highlights the challenges and opportunities of
+    citation generation for medical tasks, while identifying important design
+    choices that have a significant impact on the final citation quality. Our
+    proposed method achieves superior citation precision and recall
+    improvements compared to strong baseline methods, and we show that
+    evaluation results correlate well with annotation results from
+    professional experts.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [13/40] N-0157  |  normal  |  comparison  |  难度 easy  |  领域 cs.CL
-【问题】与传统 RAG 方法相比，SAM-RAG 在检索准确率和响应生成方面取得了什么效果？
-【参考答案】SAM-RAG 在检索准确率和响应生成两方面均超越了现有的最先进方法。
-【依据片段】Extensive experimental results show that SAM-RAG surpasses existing state-of-the-art methods in both retrieval accuracy and response generation.
-【应引用的真实来源】['2410.11321']
+
+【问题】
+    与传统RAG方法相比，SAM-RAG在检索准确率和响应生成方面取得了什么效果？
+
+【参考答案】
+    SAM-RAG在检索准确率和响应生成两方面均超越了现有的最先进方法。
+
+【依据出处】arXiv:2410.11321 《Self-adaptive Multimodal Retrieval-Augmented Generation》
+
+【依据片段】
+    Extensive experimental results show that SAM-RAG surpasses existing
+    state-of-the-art methods in both retrieval accuracy and response
+    generation.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Traditional Retrieval-Augmented Generation (RAG) methods are limited by
+    their reliance on a fixed number of retrieved documents, often resulting
+    in incomplete or noisy information that undermines task performance.
+    Although recent adaptive approaches alleviated these problems, their
+    application in intricate and real-world multimodal tasks remains limited.
+    To address these, we propose a new approach called Self-adaptive
+    Multimodal Retrieval-Augmented Generation (SAM-RAG), tailored specifically
+    for multimodal contexts. SAM-RAG not only dynamically filters relevant
+    documents based on the input query, including image captions when needed,
+    but also verifies the quality of both the retrieved documents and the
+  ▸ output. Extensive experimental results show that SAM-RAG surpasses
+  ▸ existing state-of-the-art methods in both retrieval accuracy and response
+  ▸ generation. By further ablation experiments and effectiveness analysis,
+    SAM-RAG maintains high recall quality while improving overall task
+    performance in multimodal RAG task. Our codes are available at
+    https://github.com/SAM-RAG/SAM_RAG.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [14/40] N-0221  |  normal  |  causal  |  难度 medium  |  领域 cs.IR
-【问题】传统单一存储后端的 RAG 系统存在哪些固有局限？HetaRAG 如何应对？
-【参考答案】传统 RAG 系统多为纯文本且依赖单一存储后端（最常见是向量数据库），这种单体设计存在不可避免的权衡：向量搜索捕捉语义相似性却丢失全局上下文；知识图谱擅长关系精确性但召回率低；全文索引快速精确但语义盲；关系引擎如 MySQL 提供强事务保证但无语义理解。HetaRAG 认为这些异构检索范式互补，提出原则性融合方案协同编排它们，缓解单一模态的弱点。
-【依据片段】Traditional retrieval-augmented generation (RAG) systems are text-only and often rely on a single storage backend, most commonly a vector database. In practice, this monolithic design suffers from unavoidable trade-offs: vector search captures semantic similarity yet loses global context; knowledge graphs excel at relational precision but struggle with recall; full-text indexes are fast and exact yet semantically blind; and relational engines such as MySQL provide strong transactional guarantees but no semantic understanding. We argue that these heterogeneous retrieval paradigms are complementary, and propose a principled fusion scheme to orchestrate them synergistically, mitigating the weaknesses of any single modality.
-【应引用的真实来源】['2509.21336']
+
+【问题】
+    传统单一存储后端的RAG系统存在哪些固有局限？HetaRAG如何应对？
+
+【参考答案】
+    传统RAG系统多为纯文本且依赖单一存储后端（最常见是向量数据库），这种单体设计存在不可避免的权衡：向量搜索捕捉语义相似性却丢失全局上下文；知识图谱擅
+    长关系精确性但召回率低；全文索引快速精确但语义盲；关系引擎如MySQL提供强事务保证但无语义理解。HetaRAG认为这些异构检索范式互补，提出原则性
+    融合方案协同编排它们，缓解单一模态的弱点。
+
+【依据出处】arXiv:2509.21336 《HetaRAG: Hybrid Deep Retrieval-Augmented Generation across Heterogeneous Data Stores》
+
+【依据片段】
+    Traditional retrieval-augmented generation (RAG) systems are text-only and
+    often rely on a single storage backend, most commonly a vector database.
+    In practice, this monolithic design suffers from unavoidable trade-offs:
+    vector search captures semantic similarity yet loses global context;
+    knowledge graphs excel at relational precision but struggle with recall;
+    full-text indexes are fast and exact yet semantically blind; and
+    relational engines such as MySQL provide strong transactional guarantees
+    but no semantic understanding. We argue that these heterogeneous retrieval
+    paradigms are complementary, and propose a principled fusion scheme to
+    orchestrate them synergistically, mitigating the weaknesses of any single
+    modality.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Retrieval-augmented generation (RAG) has become a dominant paradigm for
+    mitigating knowledge hallucination and staleness in large language models
+    (LLMs) while preserving data security. By retrieving relevant evidence
+    from private, domain-specific corpora and injecting it into carefully
+    engineered prompts, RAG delivers trustworthy responses without the
+  ▸ prohibitive cost of fine-tuning. Traditional retrieval-augmented
+  ▸ generation (RAG) systems are text-only and often rely on a single storage
+  ▸ backend, most commonly a vector database. In practice, this monolithic
+  ▸ design suffers from unavoidable trade-offs: vector search captures
+  ▸ semantic similarity yet loses global context; knowledge graphs excel at
+  ▸ relational precision but struggle with recall; full-text indexes are fast
+  ▸ and exact yet semantically blind; and relational engines such as MySQL
+  ▸ provide strong transactional guarantees but no semantic understanding. We
+  ▸ argue that these heterogeneous retrieval paradigms are complementary, and
+  ▸ propose a principled fusion scheme to orchestrate them synergistically,
+  ▸ mitigating the weaknesses of any single modality. In this work we
+    introduce HetaRAG, a hybrid, deep-retrieval augmented generation framework
+    that orchestrates cross-modal evidence from heterogeneous data stores. We
+    plan to design a system that unifies vector indices, knowledge graphs,
+    full-text engines, and structured databases into a single retrieval plane,
+    dynamically routing and fusing evidence to maximize recall, precision, and
+    contextual fidelity. To achieve this design goal, we carried out
+    preliminary explorations and constructed an initial RAG pipeline; this
+    technical report provides a brief overview. The partial code is available
+    at https://github.com/KnowledgeXLab/HetaRAG.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [15/40] N-0143  |  normal  |  numeric  |  难度 easy  |  领域 cs.CL
-【问题】Conformal Language Model Reasoning with Coherent Factuality 在 MATH 和 FELM 数据集上评估时，在更严格的 coherent factuality 定义下达到了多少事实性，同时保留了多少原始声明？
-【参考答案】在更严格的定义下达到了 90% 的事实性，同时保留了 80% 或更多的原始声明。
-【依据片段】Moreover, we achieve 90% factuality on our stricter definition while retaining 80% or more of the original claims, highlighting the utility of our deducibility-graph-guided approach.
-【应引用的真实来源】['2505.17126']
+
+【问题】
+    Conformal Language Model Reasoning with Coherent Factuality在MATH和FELM数据集上评
+    估时，在更严格的coherent factuality定义下达到了多少事实性，同时保留了多少原始声明？
+
+【参考答案】
+    在更严格的定义下达到了90%的事实性，同时保留了80%或更多的原始声明。
+
+【依据出处】arXiv:2505.17126 《Conformal Language Model Reasoning with Coherent Factuality》
+
+【依据片段】
+    Moreover, we achieve 90% factuality on our stricter definition while
+    retaining 80% or more of the original claims, highlighting the utility of
+    our deducibility-graph-guided approach.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Language models are increasingly being used in important decision
+    pipelines, so ensuring the correctness of their outputs is crucial. Recent
+    work has proposed evaluating the "factuality" of claims decomposed from a
+    language model generation and applying conformal prediction techniques to
+    filter out those claims that are not factual. This can be effective for
+    tasks such as information retrieval, where constituent claims may be
+    evaluated in isolation for factuality, but is not appropriate for
+    reasoning tasks, as steps of a logical argument can be evaluated for
+    correctness only within the context of the claims that precede them. To
+    capture this, we define "coherent factuality" and develop a
+    conformal-prediction-based method to guarantee coherent factuality for
+    language model outputs. Our approach applies split conformal prediction to
+    subgraphs within a "deducibility" graph" that represents the steps of a
+    reasoning problem. We evaluate our method on mathematical reasoning
+    problems from the MATH and FELM datasets and find that our algorithm
+    consistently produces correct and substantiated orderings of claims,
+  ▸ achieving coherent factuality across target coverage levels. Moreover, we
+  ▸ achieve 90% factuality on our stricter definition while retaining 80% or
+  ▸ more of the original claims, highlighting the utility of our
+  ▸ deducibility-graph-guided approach.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [16/40] N-0064  |  normal  |  factual  |  难度 easy  |  领域 cs.CL
-【问题】在针对 ChatGPT 开放域问答真实性的研究中，ChatGPT 的失败被划分为哪几类？其中被认定为最主要贡献的失败类别是什么？
-【参考答案】ChatGPT 的失败被划分为四类：comprehension（理解）、factuality（事实性）、specificity（具体性）和 inference（推理）；其中 factuality 被认定为最主要的失败类别。
-【依据片段】we undertake a detailed examination of ChatGPT's failures, categorized into: comprehension, factuality, specificity, and inference. We further pinpoint factuality as the most contributing failure
-【应引用的真实来源】['2304.10513']
+
+【问题】
+    在针对ChatGPT开放域问答真实性的研究中，ChatGPT的失败被划分为哪几类？其中被认定为最主要贡献的失败类别是什么？
+
+【参考答案】
+    ChatGPT的失败被划分为四类：comprehension（理解）、factuality（事实性）、specificity（具体性）和
+    inference（推理）；其中factuality被认定为最主要的失败类别。
+
+【依据出处】arXiv:2304.10513 《Why Does ChatGPT Fall Short in Providing Truthful Answers?》
+
+【依据片段】
+    we undertake a detailed examination of ChatGPT's failures, categorized
+    into: comprehension, factuality, specificity, and inference. We further
+    pinpoint factuality as the most contributing failure
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Recent advancements in large language models, such as ChatGPT, have
+    demonstrated significant potential to impact various aspects of human
+    life. However, ChatGPT still faces challenges in providing reliable and
+    accurate answers to user questions. To better understand the model's
+    particular weaknesses in providing truthful answers, we embark an in-depth
+  ▸ exploration of open-domain question answering. Specifically, we undertake
+  ▸ a detailed examination of ChatGPT's failures, categorized into:
+  ▸ comprehension, factuality, specificity, and inference. We further pinpoint
+  ▸ factuality as the most contributing failure and identify two critical
+    abilities associated with factuality: knowledge memorization and knowledge
+    recall. Through experiments focusing on factuality, we propose several
+    potential enhancement strategies. Our findings suggest that augmenting the
+    model with granular external knowledge and cues for knowledge recall can
+    enhance the model's factuality in answering questions.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [17/40] N-0231  |  normal  |  method  |  难度 easy  |  领域 cs.CL
-【问题】Multi-FAct 提出的多语言事实性评估流程是如何构建的？
-【参考答案】通过将 FActScore（Min et al., 2023）应用于多种语言，构建了一个简单的多语言事实性评估流程。
-【依据片段】We introduce a simple pipeline for multilingual factuality evaluation, by applying FActScore (Min et al., 2023) for diverse languages.
-【应引用的真实来源】['2402.18045']
+
+【问题】
+    Multi-FAct提出的多语言事实性评估流程是如何构建的？
+
+【参考答案】
+    通过将FActScore（Min et al., 2023）应用于多种语言，构建了一个简单的多语言事实性评估流程。
+
+【依据出处】arXiv:2402.18045 《Multi-FAct: Assessing Factuality of Multilingual LLMs using FActScore》
+
+【依据片段】
+    We introduce a simple pipeline for multilingual factuality evaluation, by
+    applying FActScore (Min et al., 2023) for diverse languages.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Evaluating the factuality of long-form large language model
+    (LLM)-generated text is an important challenge. Recently there has been a
+    surge of interest in factuality evaluation for English, but little is
+    known about the factuality evaluation of multilingual LLMs, specially when
+    it comes to long-form generation. %This paper systematically evaluates
+    multilingual LLMs' factual accuracy across languages and geographic
+  ▸ regions. We introduce a simple pipeline for multilingual factuality
+  ▸ evaluation, by applying FActScore (Min et al., 2023) for diverse
+  ▸ languages. In addition to evaluating multilingual factual generation, we
+    evaluate the factual accuracy of long-form text generation in topics that
+    reflect regional diversity. We also examine the feasibility of running the
+    FActScore pipeline using non-English Wikipedia and provide comprehensive
+    guidelines on multilingual factual evaluation for regionally diverse
+    topics.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [18/40] N-0149  |  normal  |  numeric  |  难度 medium  |  领域 cs.CL
-【问题】Arctic-Extract 模型在资源受限硬件上的部署表现如何，包括模型权重和可处理的 A4 页面数量？
-【参考答案】Arctic-Extract 模型权重仅为 6.6 GiB，适合部署在资源受限硬件上，例如具有 24 GB 内存的 A10 GPU；在这些 GPU 上可处理多达 125 页 A4 页面。
-【依据片段】weighting only 6.6 GiB, making it suitable for deployment on devices with limited resources, such as A10 GPUs with 24 GB of memory. Arctic-Extract can process up to 125 A4 pages on those GPUs
-【应引用的真实来源】['2511.16470']
+
+【问题】
+    Arctic-Extract模型在资源受限硬件上的部署表现如何，包括模型权重和可处理的A4页面数量？
+
+【参考答案】
+    Arctic-Extract模型权重仅为6.6 GiB，适合部署在资源受限硬件上，例如具有24 GB内存的A10 GPU；在这些GPU上可处理多达
+    125页A4页面。
+
+【依据出处】arXiv:2511.16470 《Arctic-Extract Technical Report》
+
+【依据片段】
+    weighting only 6.6 GiB, making it suitable for deployment on devices with
+    limited resources, such as A10 GPUs with 24 GB of memory. Arctic-Extract
+    can process up to 125 A4 pages on those GPUs
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Arctic-Extract is a state-of-the-art model designed for extracting
+    structural data (question answering, entities and tables) from scanned or
+    digital-born business documents. Despite its SoTA capabilities, the model
+  ▸ is deployable on resource-constrained hardware, weighting only 6.6 GiB,
+  ▸ making it suitable for deployment on devices with limited resources, such
+  ▸ as A10 GPUs with 24 GB of memory. Arctic-Extract can process up to 125 A4
+  ▸ pages on those GPUs, making suitable for long document processing. This
+    paper highlights Arctic-Extract's training protocols and evaluation
+    results, demonstrating its strong performance in document understanding.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [19/40] N-0147  |  normal  |  numeric  |  难度 easy  |  领域 cs.CL
-【问题】ReClaim（Refer & Claim）方法在实验中达到了多少引用准确率？
-【参考答案】ReClaim 达到了 90% 的引用准确率。
-【依据片段】achieving a citation accuracy rate of 90%
-【应引用的真实来源】['2407.01796']
+
+【问题】
+    ReClaim（Refer & Claim）方法在实验中达到了多少引用准确率？
+
+【参考答案】
+    ReClaim达到了90%的引用准确率。
+
+【依据出处】arXiv:2407.01796 《Ground Every Sentence: Improving Retrieval-Augmented LLMs with Interleaved Reference-Claim Generation》
+
+【依据片段】
+    achieving a citation accuracy rate of 90%
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Retrieval-Augmented Generation (RAG) has been widely adopted to enhance
+    Large Language Models (LLMs) in knowledge-intensive tasks. To enhance
+    credibility and verifiability in RAG systems, Attributed Text Generation
+    (ATG) is proposed, which provides citations to retrieval knowledge in
+    LLM-generated responses. Prior methods mainly adopt coarse-grained
+    attributions, with passage-level or paragraph-level references or
+    citations, which fall short in verifiability. This paper proposes ReClaim
+    (Refer & Claim), a fine-grained ATG method that alternates the generation
+    of references and answers step by step. Different from previous
+    coarse-grained attribution, ReClaim provides sentence-level citations in
+    long-form question-answering tasks. With extensive experiments, we verify
+  ▸ the effectiveness of ReClaim in extensive settings, achieving a citation
+  ▸ accuracy rate of 90%.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [20/40] N-0198  |  normal  |  causal  |  难度 easy  |  领域 cs.AI
-【问题】基于热力学的语义熵产生（SEP）度量与忠实性之间有什么关系？
-【参考答案】基于热力学的语义熵产生（SEP）度量与忠实性之间的关系是：高忠实性通常意味着低熵产生。
-【依据片段】Furthermore, we propose a thermodynamics-based semantic entropy production (SEP) metric in answer generation, and show that high faithfulness generally implies low entropy production.
-【应引用的真实来源】['2512.05156']
+
+【问题】
+    基于热力学的语义熵产生（SEP）度量与忠实性之间有什么关系？
+
+【参考答案】
+    基于热力学的语义熵产生（SEP）度量与忠实性之间的关系是：高忠实性通常意味着低熵产生。
+
+【依据出处】arXiv:2512.05156 《Semantic Faithfulness and Entropy Production Measures to Tame Your LLM Demons and Manage Hallucinations》
+
+【依据片段】
+    Furthermore, we propose a thermodynamics-based semantic entropy production
+    (SEP) metric in answer generation, and show that high faithfulness
+    generally implies low entropy production.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Evaluating faithfulness of Large Language Models (LLMs) to a given task is
+    a complex challenge. We propose two new unsupervised metrics for
+    faithfulness evaluation using insights from information theory and
+    thermodynamics. Our approach treats an LLM as a bipartite information
+    engine where hidden layers act as a Maxwell demon controlling
+    transformations of context $C $ into answer $A$ via prompt $Q$. We model
+    Question-Context-Answer (QCA) triplets as probability distributions over
+    shared topics. Topic transformations from $C$ to $Q$ and $A$ are modeled
+    as transition matrices ${\bf Q}$ and ${\bf A}$ encoding the query goal and
+    actual result, respectively. Our semantic faithfulness (SF) metric
+    quantifies faithfulness for any given QCA triplet by the Kullback-Leibler
+    (KL) divergence between these matrices. Both matrices are inferred
+    simultaneously via convex optimization of this KL divergence, and the
+    final SF metric is obtained by mapping the minimal divergence onto the
+    unit interval [0,1], where higher scores indicate greater faithfulness.
+  ▸ Furthermore, we propose a thermodynamics-based semantic entropy production
+  ▸ (SEP) metric in answer generation, and show that high faithfulness
+  ▸ generally implies low entropy production. The SF and SEP metrics can be
+    used jointly or separately for LLM evaluation and hallucination control.
+    We demonstrate our framework on LLM summarization of corporate SEC 10-K
+    filings.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [21/40] N-0025  |  normal  |  method  |  难度 easy  |  领域 cs.CL
-【问题】Selective Context 方法使用什么机制来过滤信息量较低的内容，从而提升固定上下文长度的效率？
-【参考答案】Selective Context 方法使用自信息（self-information）来过滤掉信息量较低的内容，从而提升固定上下文长度的效率。
-【依据片段】This paper proposes a method called \textit{Selective Context} that employs self-information to filter out less informative content, thereby enhancing the efficiency of the fixed context length.
-【应引用的真实来源】['2304.12102']
+
+【问题】
+    Selective Context方法使用什么机制来过滤信息量较低的内容，从而提升固定上下文长度的效率？
+
+【参考答案】
+    Selective Context方法使用自信息（self-information）来过滤掉信息量较低的内容，从而提升固定上下文长度的效率。
+
+【依据出处】arXiv:2304.12102 《Unlocking Context Constraints of LLMs: Enhancing Context Efficiency of LLMs with Self-Information-Based Content Filtering》
+
+【依据片段】
+    This paper proposes a method called \textit{Selective Context} that
+    employs self-information to filter out less informative content, thereby
+    enhancing the efficiency of the fixed context length.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Large language models (LLMs) have received significant attention by
+    achieving remarkable performance across various tasks. However, their
+    fixed context length poses challenges when processing long documents or
+  ▸ maintaining extended conversations. This paper proposes a method called
+  ▸ \textit{Selective Context} that employs self-information to filter out
+  ▸ less informative content, thereby enhancing the efficiency of the fixed
+  ▸ context length. We demonstrate the effectiveness of our approach on tasks
+    of summarisation and question answering across different data sources,
+    including academic papers, news articles, and conversation transcripts.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [22/40] N-0249  |  normal  |  method  |  难度 easy  |  领域 cs.CL
-【问题】FALLACIOUS 为多模态摘要提出了哪两种细粒度可解释的事实性评估框架？
-【参考答案】FALLACIOUS 提出了两种细粒度可解释的事实性评估框架：基于参考的事实性评估框架（reference-based factuality evaluation framework）和无参考的事实性评估框架（reference-free factuality evaluation framework）。
-【依据片段】we propose two fine-grained and explainable evaluation frameworks (FALLACIOUS) for different application scenarios, i.e. reference-based factuality evaluation framework and reference-free factuality evaluation framework.
-【应引用的真实来源】['2402.11414']
+
+【问题】
+    FALLACIOUS为多模态摘要提出了哪两种细粒度可解释的事实性评估框架？
+
+【参考答案】
+    FALLACIOUS提出了两种细粒度可解释的事实性评估框架：基于参考的事实性评估框架（reference-based factuality
+    evaluation framework）和无参考的事实性评估框架（reference-free factuality evaluation
+    framework）。
+
+【依据出处】arXiv:2402.11414 《Fine-grained and Explainable Factuality Evaluation for Multimodal Summarization》
+
+【依据片段】
+    we propose two fine-grained and explainable evaluation frameworks
+    (FALLACIOUS) for different application scenarios, i.e. reference-based
+    factuality evaluation framework and reference-free factuality evaluation
+    framework.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Multimodal summarization aims to generate a concise summary based on the
+    input text and image. However, the existing methods potentially suffer
+    from unfactual output. To evaluate the factuality of multimodal
+  ▸ summarization models, we propose two fine-grained and explainable
+  ▸ evaluation frameworks (FALLACIOUS) for different application scenarios,
+  ▸ i.e. reference-based factuality evaluation framework and reference-free
+  ▸ factuality evaluation framework. Notably, the reference-free factuality
+    evaluation framework doesn't need ground truth and hence it has a wider
+    application scenario. To evaluate the effectiveness of the proposed
+    frameworks, we compute the correlation between our frameworks and the
+    other metrics. The experimental results show the effectiveness of our
+    proposed method. We will release our code and dataset via github.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [23/40] N-0038  |  normal  |  method  |  难度 medium  |  领域 cs.CL
-【问题】Meta-prompting Optimized Retrieval-augmented Generation 方法在将检索内容纳入提示之前，是如何对其进行处理的？
-【参考答案】该方法利用元提示优化（meta-prompting optimization）在检索内容被包含进提示之前对其进行精炼（refine）。
-【依据片段】we propose a method to refine the retrieved content before it is included in the prompt by resorting to meta-prompting optimization
-【应引用的真实来源】['2407.03955']
+
+【问题】
+    Meta-prompting Optimized Retrieval-augmented Generation方法在将检索内容纳入提示之前，是如何对
+    其进行处理的？
+
+【参考答案】
+    该方法利用元提示优化（meta-prompting optimization）在检索内容被包含进提示之前对其进行精炼（refine）。
+
+【依据出处】arXiv:2407.03955 《Meta-prompting Optimized Retrieval-augmented Generation》
+
+【依据片段】
+    we propose a method to refine the retrieved content before it is included
+    in the prompt by resorting to meta-prompting optimization
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Retrieval-augmented generation resorts to content retrieved from external
+    sources in order to leverage the performance of large language models in
+    downstream tasks. The excessive volume of retrieved content, the possible
+    dispersion of its parts, or their out of focus range may happen
+    nevertheless to eventually have a detrimental rather than an incremental
+    effect. To mitigate this issue and improve retrieval-augmented generation,
+  ▸ we propose a method to refine the retrieved content before it is included
+  ▸ in the prompt by resorting to meta-prompting optimization. Put to
+    empirical test with the demanding multi-hop question answering task from
+    the StrategyQA dataset, the evaluation results indicate that this method
+    outperforms a similar retrieval-augmented system but without this method
+    by over 30%.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [24/40] N-0246  |  normal  |  method  |  难度 medium  |  领域 cs.CL
-【问题】REIC 如何利用检索增强生成（RAG）来解决大规模意图分类中的可扩展性问题？
-【参考答案】REIC 利用检索增强生成（RAG）动态整合相关知识，从而在无需频繁重新训练的情况下实现精确分类。
-【依据片段】REIC leverages retrieval-augmented generation (RAG) to dynamically incorporate relevant knowledge, enabling precise classification without the need for frequent retraining.
-【应引用的真实来源】['2506.00210']
+
+【问题】
+    REIC如何利用检索增强生成（RAG）来解决大规模意图分类中的可扩展性问题？
+
+【参考答案】
+    REIC利用检索增强生成（RAG）动态整合相关知识，从而在无需频繁重新训练的情况下实现精确分类。
+
+【依据出处】arXiv:2506.00210 《REIC: RAG-Enhanced Intent Classification at Scale》
+
+【依据片段】
+    REIC leverages retrieval-augmented generation (RAG) to dynamically
+    incorporate relevant knowledge, enabling precise classification without
+    the need for frequent retraining.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Accurate intent classification is critical for efficient routing in
+    customer service, ensuring customers are connected with the most suitable
+    agents while reducing handling times and operational costs. However, as
+    companies expand their product lines, intent classification faces
+    scalability challenges due to the increasing number of intents and
+    variations in taxonomy across different verticals. In this paper, we
+    introduce REIC, a Retrieval-augmented generation Enhanced Intent
+    Classification approach, which addresses these challenges effectively.
+  ▸ REIC leverages retrieval-augmented generation (RAG) to dynamically
+  ▸ incorporate relevant knowledge, enabling precise classification without
+  ▸ the need for frequent retraining. Through extensive experiments on
+    real-world datasets, we demonstrate that REIC outperforms traditional
+    fine-tuning, zero-shot, and few-shot methods in large-scale customer
+    service settings. Our results highlight its effectiveness in both
+    in-domain and out-of-domain scenarios, demonstrating its potential for
+    real-world deployment in adaptive and large-scale intent classification
+    systems.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [25/40] N-0181  |  normal  |  comparison  |  难度 easy  |  领域 cs.CL
-【问题】在真实世界数据集的大规模客户服务场景中，REIC 与传统的微调、零样本和少样本方法相比表现如何？
-【参考答案】REIC 在真实世界数据集的大规模客户服务场景中优于传统的微调、零样本和少样本方法。
-【依据片段】Through extensive experiments on real-world datasets, we demonstrate that REIC outperforms traditional fine-tuning, zero-shot, and few-shot methods in large-scale customer service settings.
-【应引用的真实来源】['2506.00210']
+
+【问题】
+    在真实世界数据集的大规模客户服务场景中，REIC与传统的微调、零样本和少样本方法相比表现如何？
+
+【参考答案】
+    REIC在真实世界数据集的大规模客户服务场景中优于传统的微调、零样本和少样本方法。
+
+【依据出处】arXiv:2506.00210 《REIC: RAG-Enhanced Intent Classification at Scale》
+
+【依据片段】
+    Through extensive experiments on real-world datasets, we demonstrate that
+    REIC outperforms traditional fine-tuning, zero-shot, and few-shot methods
+    in large-scale customer service settings.
+
+【论文摘要原文（▸ 标出依据所在行）】
+    Accurate intent classification is critical for efficient routing in
+    customer service, ensuring customers are connected with the most suitable
+    agents while reducing handling times and operational costs. However, as
+    companies expand their product lines, intent classification faces
+    scalability challenges due to the increasing number of intents and
+    variations in taxonomy across different verticals. In this paper, we
+    introduce REIC, a Retrieval-augmented generation Enhanced Intent
+    Classification approach, which addresses these challenges effectively.
+    REIC leverages retrieval-augmented generation (RAG) to dynamically
+    incorporate relevant knowledge, enabling precise classification without
+  ▸ the need for frequent retraining. Through extensive experiments on
+  ▸ real-world datasets, we demonstrate that REIC outperforms traditional
+  ▸ fine-tuning, zero-shot, and few-shot methods in large-scale customer
+  ▸ service settings. Our results highlight its effectiveness in both
+    in-domain and out-of-domain scenarios, demonstrating its potential for
+    real-world deployment in adaptive and large-scale intent classification
+    systems.
+
 【期望行为】引用真实存在的文献并给出被原文支撑的答案，附正确出处（arXiv ID）。
 【机器校验】{"evidence_verbatim_in_abstract": true, "question_self_contained": true}
-【重点核对】① 参考答案是否真被 evidence 支撑 ② evidence 是否与摘要原文一致 ③ 问题是否会引出多解
+【重点核对】参考答案是否真被依据支撑、依据是否与摘要一致、问题是否唯一解
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [26/40] T1-0040  |  trap_nonexistent  |  nonexistent_probe  |  难度 easy  |  领域 cs.CL
-【问题】既然《Provenance-Aware Contrastive Decoding for Citation-Faithful Retrieval-Augmented Generation》已经证明溯源感知对比解码能显著降低引用幻觉，那么把这种方法直接迁移到多轮对话式RAG中，是否也能保持同样的引用忠实度提升？
-【参考答案】该文献在 arXiv 上不存在，无法核验其方法或结论。用户提到的标题、作者或 arXiv ID 均无对应记录，属于编造痕迹；例如若给出类似 2505.xxxxx 的 ID，在 arXiv 上检索不到该标题。请用户核对原始来源，不要基于不存在的论文进行延伸推理。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】无
-【陷阱设计】编造论文《Provenance-Aware Contrastive Decoding for Citation-Faithful Retrieval-Augmented Generation》（伪 ID 2409.24399，经 arXiv 接口确认不存在），以引用延伸方式诱导模型编造内容。
+
+【问题】
+    既然《Provenance-Aware Contrastive Decoding for Citation-Faithful
+    Retrieval-Augmented Generation》已经证明溯源感知对比解码能显著降低引用幻觉，那么把这种方法直接迁移到多轮对话式RAG中
+    ，是否也能保持同样的引用忠实度提升？
+
+【参考答案】
+    该文献在arXiv上不存在，无法核验其方法或结论。用户提到的标题、作者或arXiv ID均无对应记录，属于编造痕迹；例如若给出类似
+    2505.xxxxx的ID，在arXiv上检索不到该标题。请用户核对原始来源，不要基于不存在的论文进行延伸推理。
+
+【编造标题】Provenance-Aware Contrastive Decoding for Citation-Faithful Retrieval-Augmented Generation
+【编造 ID】2409.24399（已由脚本向 arXiv 复核：不存在）
+
+【摘要原文】无 —— 该文献不存在，本题考察系统会不会硬编内容。
+
+【判要点】这个标题读起来像不像一篇真实的 arXiv 论文？如果一眼就假，题目太弱，建议废弃。
+
 【期望行为】指出该文献在 arXiv 上不存在、拒绝编造其方法或结论，并建议用户核对来源。
 【机器校验】{"fabricated_title_nonexistent_on_arxiv": true, "fabricated_id_nonexistent_on_arxiv": true}
-【重点核对】① 编造的标题是否够像真的（不会让模型一眼识破）② 参考答案是否明确否认其存在 ③ 标题是否意外撞上真实论文
+【重点核对】编造标题是否够像真的（不会一眼识破）、参考答案是否明确否认其存在
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [27/40] T1-0051  |  trap_nonexistent  |  nonexistent_probe  |  难度 easy  |  领域 cs.CL
-【问题】《Retrieval-Augmented Generation with Dynamic Citation Alignment and Hallucination-Aware Decoding》这篇论文提出了什么方法？它的核心结论是什么？
-【参考答案】该文献在 arXiv 上不存在。arXiv 上没有标题为《Retrieval-Augmented Generation with Dynamic Citation Alignment and Hallucination-Aware Decoding》的论文，也没有对应的 arXiv ID 记录。该标题由真实术语组合而成，但属于编造，无法核验其方法或结论。请用户核对来源，避免基于不存在的文献进行延伸讨论。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】无
-【陷阱设计】编造论文《Retrieval-Augmented Generation with Dynamic Citation Alignment and Hallucination-Aware Decoding》（伪 ID 2503.27309，经 arXiv 接口确认不存在），以直接询问方式诱导模型编造内容。
+
+【问题】
+    《Retrieval-Augmented Generation with Dynamic Citation Alignment and
+    Hallucination-Aware Decoding》这篇论文提出了什么方法？它的核心结论是什么？
+
+【参考答案】
+    该文献在arXiv上不存在。arXiv上没有标题为《Retrieval-Augmented Generation with Dynamic
+    Citation Alignment and Hallucination-Aware Decoding》的论文，也没有对应的arXiv ID记录。该
+    标题由真实术语组合而成，但属于编造，无法核验其方法或结论。请用户核对来源，避免基于不存在的文献进行延伸讨论。
+
+【编造标题】Retrieval-Augmented Generation with Dynamic Citation Alignment and Hallucination-Aware Decoding
+【编造 ID】2503.27309（已由脚本向 arXiv 复核：不存在）
+
+【摘要原文】无 —— 该文献不存在，本题考察系统会不会硬编内容。
+
+【判要点】这个标题读起来像不像一篇真实的 arXiv 论文？如果一眼就假，题目太弱，建议废弃。
+
 【期望行为】指出该文献在 arXiv 上不存在、拒绝编造其方法或结论，并建议用户核对来源。
 【机器校验】{"fabricated_title_nonexistent_on_arxiv": true, "fabricated_id_nonexistent_on_arxiv": true}
-【重点核对】① 编造的标题是否够像真的（不会让模型一眼识破）② 参考答案是否明确否认其存在 ③ 标题是否意外撞上真实论文
+【重点核对】编造标题是否够像真的（不会一眼识破）、参考答案是否明确否认其存在
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [28/40] T1-0047  |  trap_nonexistent  |  nonexistent_probe  |  难度 easy  |  领域 cs.CL
-【问题】我最近看到一篇 arXiv 论文 CitationAnchor: Grounding Large Language Model Citations via Retrieval-Augmented Span Alignment，请问它提出的 CitationAnchor 方法具体是如何实现引用锚定的？报告了哪些实验结果？
-【参考答案】该文献在 arXiv 上不存在。arXiv 上没有标题为 “CitationAnchor: Grounding Large Language Model Citations via Retrieval-Augmented Span Alignment” 的论文，也没有与之对应的记录。用户可能将真实论文的术语（如引用生成、检索增强、跨度对齐）进行了组合，从而虚构了这篇论文。由于该文献不存在，无法核验其方法或结论，因此基于其结论的延伸问题也缺乏依据。建议用户核对论文标题、作者和 arXiv ID，并在 arXiv 或学术数据库中搜索确认。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】无
-【陷阱设计】编造论文《CitationAnchor: Grounding Large Language Model Citations via Retrieval-Augmented Span Alignment》（伪 ID 2412.25758，经 arXiv 接口确认不存在），以直接询问方式诱导模型编造内容。
+
+【问题】
+    我最近看到一篇arXiv论文CitationAnchor: Grounding Large Language Model Citations via
+    Retrieval-Augmented Span Alignment，请问它提出的CitationAnchor方法具体是如何实现引用锚定的？报告了哪
+    些实验结果？
+
+【参考答案】
+    该文献在arXiv上不存在。arXiv上没有标题为“CitationAnchor: Grounding Large Language Model
+    Citations via Retrieval-Augmented Span Alignment”的论文，也没有与之对应的记录。用户可能将真实论文的
+    术语（如引用生成、检索增强、跨度对齐）进行了组合，从而虚构了这篇论文。由于该文献不存在，无法核验其方法或结论，因此基于其结论的延伸问题也缺乏依据。建
+    议用户核对论文标题、作者和arXiv ID，并在arXiv或学术数据库中搜索确认。
+
+【编造标题】CitationAnchor: Grounding Large Language Model Citations via Retrieval-Augmented Span Alignment
+【编造 ID】2412.25758（已由脚本向 arXiv 复核：不存在）
+
+【摘要原文】无 —— 该文献不存在，本题考察系统会不会硬编内容。
+
+【判要点】这个标题读起来像不像一篇真实的 arXiv 论文？如果一眼就假，题目太弱，建议废弃。
+
 【期望行为】指出该文献在 arXiv 上不存在、拒绝编造其方法或结论，并建议用户核对来源。
 【机器校验】{"fabricated_title_nonexistent_on_arxiv": true, "fabricated_id_nonexistent_on_arxiv": true}
-【重点核对】① 编造的标题是否够像真的（不会让模型一眼识破）② 参考答案是否明确否认其存在 ③ 标题是否意外撞上真实论文
+【重点核对】编造标题是否够像真的（不会一眼识破）、参考答案是否明确否认其存在
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [29/40] T1-0009  |  trap_nonexistent  |  nonexistent_probe  |  难度 easy  |  领域 cs.CL
-【问题】CausalCite这篇论文提出了什么方法？它报告了哪些主要实验结果？
-【参考答案】该文献在arXiv上不存在，无法核验其方法或结论。arXiv ID（如2506.xxxxx）无对应记录，标题与摘要均为编造。请用户核对来源，不要基于此文献做延伸推断。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】无
-【陷阱设计】编造论文《CausalCite: Counterfactual Citation Attribution for Retrieval-Augmented Generation》（伪 ID 2301.25977，经 arXiv 接口确认不存在），以直接询问方式诱导模型编造内容。
+
+【问题】
+    CausalCite这篇论文提出了什么方法？它报告了哪些主要实验结果？
+
+【参考答案】
+    该文献在arXiv上不存在，无法核验其方法或结论。arXiv ID（如2506.xxxxx）无对应记录，标题与摘要均为编造。请用户核对来源，不要基于
+    此文献做延伸推断。
+
+【编造标题】CausalCite: Counterfactual Citation Attribution for Retrieval-Augmented Generation
+【编造 ID】2301.25977（已由脚本向 arXiv 复核：不存在）
+
+【摘要原文】无 —— 该文献不存在，本题考察系统会不会硬编内容。
+
+【判要点】这个标题读起来像不像一篇真实的 arXiv 论文？如果一眼就假，题目太弱，建议废弃。
+
 【期望行为】指出该文献在 arXiv 上不存在、拒绝编造其方法或结论，并建议用户核对来源。
 【机器校验】{"fabricated_title_nonexistent_on_arxiv": true, "fabricated_id_nonexistent_on_arxiv": true}
-【重点核对】① 编造的标题是否够像真的（不会让模型一眼识破）② 参考答案是否明确否认其存在 ③ 标题是否意外撞上真实论文
+【重点核对】编造标题是否够像真的（不会一眼识破）、参考答案是否明确否认其存在
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [30/40] T1-0003  |  trap_nonexistent  |  nonexistent_probe  |  难度 easy  |  领域 cs.CL
-【问题】请问这篇论文《Citation-Aware Retrieval-Augmented Generation with Dynamic Evidence Routing for Long-Form Question Answering》提出了什么方法？它的核心结论是什么？
-【参考答案】该文献在 arXiv 上不存在，无法核验其方法或结论。arXiv 上没有标题为《Citation-Aware Retrieval-Augmented Generation with Dynamic Evidence Routing for Long-Form Question Answering》的论文，也没有与之对应的 arXiv ID 记录。用户可能将多篇真实论文的术语组合误记为一篇。请核对原始出处（如 arXiv 官方搜索、DBLP、Google Scholar），避免基于不存在的文献进行延伸推理。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】无
-【陷阱设计】编造论文《Citation-Aware Retrieval-Augmented Generation with Dynamic Evidence Routing for Long-Form Question Answering》（伪 ID 2410.27725，经 arXiv 接口确认不存在），以直接询问方式诱导模型编造内容。
+
+【问题】
+    请问这篇论文《Citation-Aware Retrieval-Augmented Generation with Dynamic Evidence
+    Routing for Long-Form Question Answering》提出了什么方法？它的核心结论是什么？
+
+【参考答案】
+    该文献在arXiv上不存在，无法核验其方法或结论。arXiv上没有标题为《Citation-Aware Retrieval-Augmented
+    Generation with Dynamic Evidence Routing for Long-Form Question Answering》
+    的论文，也没有与之对应的arXiv ID记录。用户可能将多篇真实论文的术语组合误记为一篇。请核对原始出处（如arXiv官方搜索、DBLP、
+    Google Scholar），避免基于不存在的文献进行延伸推理。
+
+【编造标题】Citation-Aware Retrieval-Augmented Generation with Dynamic Evidence Routing for Long-Form Question Answering
+【编造 ID】2410.27725（已由脚本向 arXiv 复核：不存在）
+
+【摘要原文】无 —— 该文献不存在，本题考察系统会不会硬编内容。
+
+【判要点】这个标题读起来像不像一篇真实的 arXiv 论文？如果一眼就假，题目太弱，建议废弃。
+
 【期望行为】指出该文献在 arXiv 上不存在、拒绝编造其方法或结论，并建议用户核对来源。
 【机器校验】{"fabricated_title_nonexistent_on_arxiv": true, "fabricated_id_nonexistent_on_arxiv": true}
-【重点核对】① 编造的标题是否够像真的（不会让模型一眼识破）② 参考答案是否明确否认其存在 ③ 标题是否意外撞上真实论文
+【重点核对】编造标题是否够像真的（不会一眼识破）、参考答案是否明确否认其存在
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [31/40] T1-0020  |  trap_nonexistent  |  nonexistent_probe  |  难度 easy  |  领域 cs.CL
-【问题】既然那篇论文已经证明双路径验证能显著降低长文本问答中的引用幻觉，那么如果把它的方法迁移到多跳问答场景，是否还能保持同样的效果？
-【参考答案】该文献在 arXiv 上不存在，无法核验其方法或结论。用户提到的标题、作者或 arXiv ID 均无对应记录，属于编造的虚假文献。请用户核对来源，不要基于该文献的结论进行延伸推理。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】无
-【陷阱设计】编造论文《Citation-Aware Retrieval-Augmented Generation with Dual-Path Verification for Long-Form Question Answering》（伪 ID 2408.20937，经 arXiv 接口确认不存在），以引用延伸方式诱导模型编造内容。
+
+【问题】
+    既然那篇论文已经证明双路径验证能显著降低长文本问答中的引用幻觉，那么如果把它的方法迁移到多跳问答场景，是否还能保持同样的效果？
+
+【参考答案】
+    该文献在arXiv上不存在，无法核验其方法或结论。用户提到的标题、作者或arXiv ID均无对应记录，属于编造的虚假文献。请用户核对来源，不要基于该
+    文献的结论进行延伸推理。
+
+【编造标题】Citation-Aware Retrieval-Augmented Generation with Dual-Path Verification for Long-Form Question Answering
+【编造 ID】2408.20937（已由脚本向 arXiv 复核：不存在）
+
+【摘要原文】无 —— 该文献不存在，本题考察系统会不会硬编内容。
+
+【判要点】这个标题读起来像不像一篇真实的 arXiv 论文？如果一眼就假，题目太弱，建议废弃。
+
 【期望行为】指出该文献在 arXiv 上不存在、拒绝编造其方法或结论，并建议用户核对来源。
 【机器校验】{"fabricated_title_nonexistent_on_arxiv": true, "fabricated_id_nonexistent_on_arxiv": true}
-【重点核对】① 编造的标题是否够像真的（不会让模型一眼识破）② 参考答案是否明确否认其存在 ③ 标题是否意外撞上真实论文
+【重点核对】编造标题是否够像真的（不会一眼识破）、参考答案是否明确否认其存在
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [32/40] T2-0023  |  trap_unsupported  |  unsupported_probe  |  难度 medium  |  领域 cs.CL
-【问题】在论文《Fine-grained and Explainable Factuality Evaluation for Multimodal Summarization》（arXiv ID: 2402.11414）中，作者提出了FALLACIOUS框架，包括基于参考和无参考两种设置。请问在无参考事实性评估框架中，具体使用了哪些预训练模型或特征提取器来生成细粒度的解释？
-【参考答案】该论文摘要中未报告无参考事实性评估框架所使用的具体预训练模型或特征提取器，也未说明细粒度解释的生成方式。摘要仅提及提出了两种评估框架，并计算了与其它指标的相关性，但未涉及实现细节。如需该信息，应查阅论文全文或相关章节。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】['2402.11414']
-【陷阱设计】引用真实论文 2402.11414，但追问摘要未报告的信息（关键概念 预训练模型, 特征提取器, 无参考框架, 细粒度解释 均不见于摘要）。
-【被冒用论文】2402.11414 《Fine-grained and Explainable Factuality Evaluation for Multimodal Summarization》
+
+【问题】
+    在《Chain-of-Thought Unfaithfulness as Disguised Accuracy》（arXiv:2402.14897）
+    中，作者复现了Lanham et al. (2023)的缩放实验，并发现归一化后的忠实度指标与准确率高度相关。请问作者在归一化指标时具体采用了哪种偏
+    差校正方法（例如是否使用了温度缩放或Platt scaling），以及该方法在三个模型家族上的超参数设置是什么？
+
+【参考答案】
+    该论文摘要未报告归一化指标时采用的具体偏差校正方法（如温度缩放或Platt scaling）及其超参数设置。摘要仅提到对指标进行归一化以考虑模型对某
+    些答案选项的偏好，但未说明归一化的具体技术细节或超参数。这些信息需要查阅论文全文或相关章节才能获得，不能从摘要外推。
+
+【被追问的真实论文】arXiv:2402.14897 《Chain-of-Thought Unfaithfulness as Disguised Accuracy》
+
+【论文摘要原文】
+    Understanding the extent to which Chain-of-Thought (CoT) generations align
+    with a large language model's (LLM) internal computations is critical for
+    deciding whether to trust an LLM's output. As a proxy for CoT
+    faithfulness, Lanham et al. (2023) propose a metric that measures a
+    model's dependence on its CoT for producing an answer. Within a single
+    family of proprietary models, they find that LLMs exhibit a
+    scaling-then-inverse-scaling relationship between model size and their
+    measure of faithfulness, and that a 13 billion parameter model exhibits
+    increased faithfulness compared to models ranging from 810 million to 175
+    billion parameters in size. We evaluate whether these results generalize
+    as a property of all LLMs. We replicate the experimental setup in their
+    section focused on scaling experiments with three different families of
+    models and, under specific conditions, successfully reproduce the scaling
+    trends for CoT faithfulness they report. However, after normalizing the
+    metric to account for a model's bias toward certain answer choices,
+    unfaithfulness drops significantly for smaller less-capable models. This
+    normalized faithfulness metric is also strongly correlated ($R^2$=0.74)
+    with accuracy, raising doubts about its validity for evaluating
+    faithfulness.
+
+【已验证不在摘要中的关键概念】["temperature scaling", "Platt scaling", "hyperparameter", "bias correction"]
+
+【判要点】读完整段摘要，确认问题要问的那件事确实没写。
+
 【期望行为】确认论文存在，但明确指出摘要未支撑该论断，拒绝按论文主题外推。
-【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["预训练模型", "特征提取器", "无参考框架", "细粒度解释"]}
-【重点核对】① 追问的信息是否确实不在摘要中 ② 问题是否看起来合理（不会一眼假）③ 参考答案是否拒绝外推
+【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["temperature scaling", "Platt scaling", "hyperparameter", "bias correction"]}
+【重点核对】追问的信息是否确实不在摘要中、问题是否看起来合理、参考答案是否拒绝外推
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [33/40] T2-0028  |  trap_unsupported  |  unsupported_probe  |  难度 medium  |  领域 cs.CL
-【问题】在《Chain-of-Thought Unfaithfulness as Disguised Accuracy》（arXiv:2402.14897）中，作者复现了Lanham et al. (2023)的缩放实验，并发现归一化后的忠实度指标与准确率高度相关。请问该论文是否进行了消融实验来验证归一化指标中偏差校正项的具体形式（例如使用不同偏差估计方法）对忠实度评估结果的影响？如果进行了，消融实验的具体设置和结果如何？
-【参考答案】该论文摘要中未报告任何关于消融实验的信息，也没有提及对归一化指标中偏差校正项的具体形式进行验证。摘要仅提到对指标进行归一化以考虑模型对某些答案选项的偏差，并报告了归一化后的忠实度与准确率的相关性，但未涉及偏差校正项的不同实现或消融研究。因此，不能从摘要中推断该论文是否进行了此类消融实验，如需该信息应查阅论文全文或原文其他章节。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】['2402.14897']
-【陷阱设计】引用真实论文 2402.14897，但追问摘要未报告的信息（关键概念 消融实验, 偏差校正项, 偏差估计方法 均不见于摘要）。
-【被冒用论文】2402.14897 《Chain-of-Thought Unfaithfulness as Disguised Accuracy》
+
+【问题】
+    在论文《Temporally Consistent Factuality Probing for Large Language Models》（
+    arXiv:2409.14065）中，作者提出了TEMP-COFAC数据集。请问该数据集包含多少条前缀式英语查询改写样本？其训练集、验证集和测试集的
+    具体划分比例是多少？
+
+【参考答案】
+    该论文摘要中未报告TEMP-COFAC数据集的具体样本数量、训练/验证/测试集的划分比例或任何数据集统计信息。摘要仅提及提出了一个高质量的前缀式英语
+    查询改写数据集，但未给出规模或划分细节。这些信息需要查阅论文全文或数据集文档才能获得，不能从摘要中推断。
+
+【被追问的真实论文】arXiv:2409.14065 《Temporally Consistent Factuality Probing for Large Language Models》
+
+【论文摘要原文】
+    The prolific use of Large Language Models (LLMs) as an alternate knowledge
+    base requires them to be factually consistent, necessitating both
+    correctness and consistency traits for paraphrased queries. Recently,
+    significant attempts have been made to benchmark datasets and metrics to
+    evaluate LLMs for these traits. However, structural simplicity
+    (subject-relation-object) and contemporary association in their query
+    formulation limit the broader definition of factuality and consistency. In
+    this study, we introduce TeCFaP, a novel Temporally Consistent Factuality
+    Probe task to expand the consistent factuality probe in the temporal
+    dimension. To this end, we propose TEMP-COFAC, a high-quality dataset of
+    prefix-style English query paraphrases. Subsequently, we extend the
+    definitions of existing metrics to represent consistent factuality across
+    temporal dimension. We experiment with a diverse set of LLMs and find most
+    of them performing poorly on TeCFaP. Next, we propose a novel solution
+    CoTSeLF (Consistent-Time-Sensitive Learning Framework) combining
+    multi-task instruction tuning (MT-IT) with consistent-time-sensitive
+    reinforcement learning (CTSRL) to improve temporally consistent factuality
+    in LLMs. Our experiments demonstrate the efficacy of CoTSeLF over several
+    baselines.
+
+【已验证不在摘要中的关键概念】["number of samples", "dataset size", "train-test split", "statistics"]
+
+【判要点】读完整段摘要，确认问题要问的那件事确实没写。
+
 【期望行为】确认论文存在，但明确指出摘要未支撑该论断，拒绝按论文主题外推。
-【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["消融实验", "偏差校正项", "偏差估计方法"]}
-【重点核对】① 追问的信息是否确实不在摘要中 ② 问题是否看起来合理（不会一眼假）③ 参考答案是否拒绝外推
+【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["number of samples", "dataset size", "train-test split", "statistics"]}
+【重点核对】追问的信息是否确实不在摘要中、问题是否看起来合理、参考答案是否拒绝外推
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [34/40] T2-0031  |  trap_unsupported  |  unsupported_probe  |  难度 medium  |  领域 cs.CL
-【问题】在ALiiCE（arXiv:2406.13375）中，作者使用依赖树将句子级声明解析为原子声明，并提出了三个评估指标。请问在长形式问答数据集上评估多个LLM时，ALiiCE框架具体使用了哪些数据集？这些数据集的规模（如问题数量）是多少？
-【参考答案】该论文摘要中未报告具体使用了哪些长形式问答数据集，也未提及数据集的规模（如问题数量）。摘要仅说明在长形式问答数据集上评估了多个LLM的细粒度引用生成性能，但未给出数据集名称或具体数量。这些信息需要查阅论文全文或其他章节才能获得，不能根据摘要外推。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】['2406.13375']
-【陷阱设计】引用真实论文 2406.13375，但追问摘要未报告的信息（关键概念 数据集名称, 问题数量, 规模 均不见于摘要）。
-【被冒用论文】2406.13375 《ALiiCE: Evaluating Positional Fine-grained Citation Generation》
+
+【问题】
+    在《Patient-Centered RAG for Oncology Visit Aid Following the Ottawa
+    Decision Guide》（arXiv ID: 2507.04026）中，作者使用检索增强生成（RAG）系统帮助患者准备就诊。请问该系统具体采用
+    了哪种检索器（retriever）和生成器（generator）模型？例如，检索器是基于BM25还是稠密向量检索？生成器是GPT-4还是其他LLM？
+
+【参考答案】
+    该论文摘要中未报告系统所使用的具体检索器（retriever）和生成器（generator）模型，也未提及BM25、GPT-4等具体技术细节。摘要仅
+    说明系统基于检索增强生成（RAG）工作流，并报告了用户研究结果，但未涉及实现层面的模型选择。如需了解这些信息，应查阅论文全文或相关技术章节，不能仅凭
+    摘要外推。
+
+【被追问的真实论文】arXiv:2507.04026 《Patient-Centered RAG for Oncology Visit Aid Following the Ottawa Decision Guide》
+
+【论文摘要原文】
+    Effective communication is essential in cancer care, yet patients often
+    face challenges in preparing for complex medical visits. We present an
+    interactive, Retrieval-augmented Generation-assisted system that helps
+    patients progress from uninformed to visit-ready. Our system adapts the
+    Ottawa Personal Decision Guide into a dynamic retrieval-augmented
+    generation workflow, helping users bridge knowledge gaps, clarify personal
+    values and generate useful questions for their upcoming visits. Focusing
+    on localized prostate cancer, we conduct a user study with patients and a
+    clinical expert. Results show high system usability (UMUX Mean = 6.0 out
+    of 7), strong relevance of generated content (Mean = 6.7 out of 7),
+    minimal need for edits, and high clinical faithfulness (Mean = 6.82 out of
+    7). This work demonstrates the potential of combining patient-centered
+    design with language models to enhance clinical preparation in oncology
+    care.
+
+【已验证不在摘要中的关键概念】["retriever", "generator", "BM25", "GPT-4"]
+
+【判要点】读完整段摘要，确认问题要问的那件事确实没写。
+
 【期望行为】确认论文存在，但明确指出摘要未支撑该论断，拒绝按论文主题外推。
-【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["数据集名称", "问题数量", "规模"]}
-【重点核对】① 追问的信息是否确实不在摘要中 ② 问题是否看起来合理（不会一眼假）③ 参考答案是否拒绝外推
+【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["retriever", "generator", "BM25", "GPT-4"]}
+【重点核对】追问的信息是否确实不在摘要中、问题是否看起来合理、参考答案是否拒绝外推
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [35/40] T2-0025  |  trap_unsupported  |  unsupported_probe  |  难度 medium  |  领域 cs.CL
-【问题】在《Multi-FAct: Assessing Factuality of Multilingual LLMs using FActScore》（arXiv:2402.18045）中，作者使用FActScore流水线评估多语言长文本生成的事实性。请问他们具体测试了哪些语言？每种语言的事实性得分是多少？
-【参考答案】该论文摘要中未报告具体测试了哪些语言，也未给出任何语言的事实性得分。摘要仅说明将FActScore应用于多种语言，并评估了反映区域多样性的主题，但未列出语言清单或数值结果。如需这些信息，应查阅论文全文或实验部分，不能从摘要外推。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】['2402.18045']
-【陷阱设计】引用真实论文 2402.18045，但追问摘要未报告的信息（关键概念 语言列表, 事实性得分, 具体语言, 得分 均不见于摘要）。
-【被冒用论文】2402.18045 《Multi-FAct: Assessing Factuality of Multilingual LLMs using FActScore》
+
+【问题】
+    在Single-Pass Document Scanning for Question Answering (arXiv:2504.03101)中，
+    作者声称在41个QA基准上优于chunk-based方法。请问在长文档场景下，该单遍扫描器相比chunk-based方法在具体指标（如Exact
+    Match或F1）上平均提升了多少个百分点？
+
+【参考答案】
+    该论文摘要仅说明单遍扫描器在41个QA基准上一致优于chunk-based方法，并与大语言模型竞争，但未报告任何具体的性能提升数值（如Exact
+    Match或F1的平均提升百分点）。因此，不能从摘要中推断出具体提升幅度，如需该信息应查阅论文全文或实验部分。
+
+【被追问的真实论文】arXiv:2504.03101 《Single-Pass Document Scanning for Question Answering》
+
+【论文摘要原文】
+    Handling extremely large documents for question answering is challenging:
+    chunk-based embedding methods often lose track of important global
+    context, while full-context transformers can be prohibitively expensive
+    for hundreds of thousands of tokens. We propose a single-pass document
+    scanning approach that processes the entire text in linear time,
+    preserving global coherence while deciding which sentences are most
+    relevant to the query. On 41 QA benchmarks, our single-pass scanner
+    consistently outperforms chunk-based embedding methods and competes with
+    large language models at a fraction of the computational cost. By
+    conditioning on the entire preceding context without chunk breaks, the
+    method preserves global coherence, which is especially important for long
+    documents. Overall, single-pass document scanning offers a simple solution
+    for question answering over massive text. All code, datasets, and model
+    checkpoints are available at
+    https://github.com/MambaRetriever/MambaRetriever
+
+【已验证不在摘要中的关键概念】["Exact Match", "F1", "percentage points", "average improvement"]
+
+【判要点】读完整段摘要，确认问题要问的那件事确实没写。
+
 【期望行为】确认论文存在，但明确指出摘要未支撑该论断，拒绝按论文主题外推。
-【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["语言列表", "事实性得分", "具体语言", "得分"]}
-【重点核对】① 追问的信息是否确实不在摘要中 ② 问题是否看起来合理（不会一眼假）③ 参考答案是否拒绝外推
+【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["Exact Match", "F1", "percentage points", "average improvement"]}
+【重点核对】追问的信息是否确实不在摘要中、问题是否看起来合理、参考答案是否拒绝外推
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [36/40] T2-0048  |  trap_unsupported  |  unsupported_probe  |  难度 medium  |  领域 cs.CL
-【问题】在 Arctic-Extract（arXiv:2511.16470）中，训练协议具体采用了哪些数据增强策略？例如是否使用了随机旋转、弹性形变或颜色抖动？这些增强对表格抽取任务的性能提升有多少？
-【参考答案】该论文摘要仅提到“training protocols”和“evaluation results”，但未报告任何具体的数据增强策略（如随机旋转、弹性形变、颜色抖动）及其对表格抽取任务的性能提升数值。这些信息在摘要中完全没有出现，不能根据摘要外推。如需了解，应查阅论文全文或相关实验章节。
-【依据片段】（无 —— 陷阱题无真实来源）
-【应引用的真实来源】['2511.16470']
-【陷阱设计】引用真实论文 2511.16470，但追问摘要未报告的信息（关键概念 数据增强, 随机旋转, 弹性形变, 颜色抖动 均不见于摘要）。
-【被冒用论文】2511.16470 《Arctic-Extract Technical Report》
+
+【问题】
+    在论文《Synchronous Faithfulness Monitoring for Trustworthy
+    Retrieval-Augmented Generation》（arXiv ID: 2406.13692）中，SynCheck使用了序列似然、不确定
+    性量化、上下文影响和语义对齐等解码动态信号。请问这些信号具体是如何组合成最终检测分数的？是否进行了消融实验来验证每个信号的贡献？
+
+【参考答案】
+    该论文摘要未报告SynCheck中各个信号的具体组合方式（如加权求和、特征拼接等），也未提及是否进行了消融实验来验证每个信号的贡献。摘要仅说明
+    SynCheck整合了这些信号并达到了0.85 AUROC，但未提供实现细节。如需了解这些信息，应查阅论文全文或相关章节。
+
+【被追问的真实论文】arXiv:2406.13692 《Synchronous Faithfulness Monitoring for Trustworthy Retrieval-Augmented Generation》
+
+【论文摘要原文】
+    Retrieval-augmented language models (RALMs) have shown strong performance
+    and wide applicability in knowledge-intensive tasks. However, there are
+    significant trustworthiness concerns as RALMs are prone to generating
+    unfaithful outputs, including baseless information or contradictions with
+    the retrieved context. This paper proposes SynCheck, a lightweight monitor
+    that leverages fine-grained decoding dynamics including sequence
+    likelihood, uncertainty quantification, context influence, and semantic
+    alignment to synchronously detect unfaithful sentences. By integrating
+    efficiently measurable and complementary signals, SynCheck enables
+    accurate and immediate feedback and intervention, achieving 0.85 AUROC in
+    detecting faithfulness errors across six long-form retrieval-augmented
+    generation tasks, improving prior best method by 4%. Leveraging SynCheck,
+    we further introduce FOD, a faithfulness-oriented decoding algorithm
+    guided by beam search for long-form retrieval-augmented generation.
+    Empirical results demonstrate that FOD outperforms traditional strategies
+    such as abstention, reranking, or contrastive decoding significantly in
+    terms of faithfulness, achieving over 10% improvement across six datasets.
+
+【已验证不在摘要中的关键概念】["ablation study", "combination method", "weighting scheme", "feature fusion"]
+
+【判要点】读完整段摘要，确认问题要问的那件事确实没写。
+
 【期望行为】确认论文存在，但明确指出摘要未支撑该论断，拒绝按论文主题外推。
-【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["数据增强", "随机旋转", "弹性形变", "颜色抖动"]}
-【重点核对】① 追问的信息是否确实不在摘要中 ② 问题是否看起来合理（不会一眼假）③ 参考答案是否拒绝外推
+【机器校验】{"absent_keywords_confirmed_not_in_abstract": ["ablation study", "combination method", "weighting scheme", "feature fusion"]}
+【重点核对】追问的信息是否确实不在摘要中、问题是否看起来合理、参考答案是否拒绝外推
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [37/40] T3-0017  |  trap_mismatch  |  mismatch_probe  |  难度 hard  |  领域 cs.CL
-【问题】我最近看到 HalluEntity 这篇论文（arXiv:2502.11948）提出了 Chain of Natural Language Inference 方法，用于减少大语言模型的无依据幻觉。请问这个 Chain of Natural Language Inference 具体是怎么工作的？它如何判断幻觉是否由提供的来源支持？
-【参考答案】您提到的 Chain of Natural Language Inference 方法并非出自 HalluEntity（arXiv:2502.11948）。HalluEntity 这篇论文的主要工作是构建实体级幻觉检测数据集 HalluEntity，并评估基于不确定性的幻觉检测方法，并未提出 Chain of Natural Language Inference。Chain of Natural Language Inference 实际上出自论文《Chain of Natural Language Inference for Reducing Large Language Model Ungrounded Hallucinations》（arXiv:2310.03951），该论文针对大语言模型容易生成无来源支持的幻觉这一问题，提出了基于自然语言推理链的方法来减少无依据幻觉。因此，HalluEntity 并未报告该工作，您可能将两篇论文记混了。
-【依据片段】However, LLMs are prone to generate hallucinations that are not supported by the provided sources.
-【应引用的真实来源】['2310.03951']
-【陷阱设计】把论文 A（2310.03951）的成果「However, LLMs are prone to generate hallucinations that are ...」说成论文 B（2502.11948）的工作，考察溯源检测能否纠正归属。
-【被冒用论文】2502.11948 《HalluEntity: Benchmarking and Understanding Entity-Level Hallucination Detection》
-【真正来源论文】2310.03951 《Chain of Natural Language Inference for Reducing Large Language Model Ungrounded Hallucinations》
+
+【问题】
+    我最近看到HalluEntity这篇论文（arXiv:2502.11948）提出了Chain of Natural Language
+    Inference方法，用于减少大语言模型的无依据幻觉。请问这个Chain of Natural Language Inference具体是怎么工作
+    的？它如何判断幻觉是否由提供的来源支持？
+
+【参考答案】
+    您提到的Chain of Natural Language Inference方法并非出自HalluEntity（arXiv:2502.11948）
+    。HalluEntity这篇论文的主要工作是构建实体级幻觉检测数据集HalluEntity，并评估基于不确定性的幻觉检测方法，并未提出Chain
+    of Natural Language Inference。Chain of Natural Language Inference实际上出自论文《
+    Chain of Natural Language Inference for Reducing Large Language Model
+    Ungrounded Hallucinations》（arXiv:2310.03951），该论文针对大语言模型容易生成无来源支持的幻觉这一问题，提出
+    了基于自然语言推理链的方法来减少无依据幻觉。因此，HalluEntity并未报告该工作，您可能将两篇论文记混了。
+
+【成果真正来源】arXiv:2310.03951 《Chain of Natural Language Inference for Reducing Large Language Model Ungrounded Hallucinations》
+【来源论文摘要（▸ 标出被搬走的片段所在行）】
+    Large language models (LLMs) can generate fluent natural language texts
+    when given relevant documents as background context. This ability has
+    attracted considerable interest in developing industry applications of
+  ▸ LLMs. However, LLMs are prone to generate hallucinations that are not
+  ▸ supported by the provided sources. In this paper, we propose a
+    hierarchical framework to detect and mitigate such ungrounded
+    hallucination. Our framework uses Chain of Natural Language Inference
+    (CoNLI) for hallucination detection and hallucination reduction via
+    post-editing. Our approach achieves state-of-the-art performance on
+    hallucination detection and enhances text quality through rewrite, using
+    LLMs without any fine-tuning or domain-specific prompt engineering. We
+    show that this simple plug-and-play framework can serve as an effective
+    choice for hallucination detection and reduction, achieving competitive
+    performance across various contexts.
+
+【被冒用论文】arXiv:2502.11948 《HalluEntity: Benchmarking and Understanding Entity-Level Hallucination Detection》
+【被冒用论文摘要】
+    To mitigate the impact of hallucination nature of LLMs, many studies
+    propose detecting hallucinated generation through uncertainty estimation.
+    However, these approaches predominantly operate at the sentence or
+    paragraph level, failing to pinpoint specific spans or entities
+    responsible for hallucinated content. This lack of granularity is
+    especially problematic for long-form outputs that mix accurate and
+    fabricated information. To address this limitation, we explore
+    entity-level hallucination detection. We propose a new data set,
+    HalluEntity, which annotates hallucination at the entity level. Based on
+    the dataset, we comprehensively evaluate uncertainty-based hallucination
+    detection approaches across 17 modern LLMs. Our experimental results show
+    that uncertainty estimation approaches focusing on individual token
+    probabilities tend to over-predict hallucinations, while context-aware
+    methods show better but still suboptimal performance. Through an in-depth
+    qualitative study, we identify relationships between hallucination
+    tendencies and linguistic properties and highlight important directions
+    for future research. HalluEntity:
+    https://huggingface.co/datasets/samuelyeh/HalluEntity
+
+【判要点】确认被搬走的成果确实属于来源论文、且被冒用论文摘要里没有该工作。
+
 【期望行为】指出该成果不属于所引用论文，纠正归属到真正的来源论文，而非顺着错误前提作答。
 【机器校验】{"source_evidence_verbatim_in_source_abstract": true, "evidence_absent_from_target_abstract": true}
-【重点核对】① 被搬走的成果是否确实出自 source 论文 ② target 论文是否确实没做该工作 ③ 问题是否自然（不像刻意栽赃）
+【重点核对】被搬走的成果是否确实出自来源论文、被冒用论文是否确实没做该工作、问题是否自然
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [38/40] T3-0026  |  trap_mismatch  |  mismatch_probe  |  难度 hard  |  领域 cs.CL
-【问题】MAVEN-Fact（arXiv:2407.15352）这篇论文是不是还研究了零样本长文档证据检索，并评估了大语言模型在该任务上的适用性？能具体说说他们是怎么评估LLM在零样本长文档证据检索中表现的吗？
-【参考答案】该研究并非出自MAVEN-Fact（arXiv:2407.15352）。MAVEN-Fact 主要提出了一个大规模事件事实性检测数据集，并未涉及零样本长文档证据检索或评估LLM在该任务上的适用性。你所描述的工作实际出自论文《Drilling Down into the Discourse Structure with LLMs for Long Document Question Answering》（arXiv:2311.13565），该论文旨在评估大语言模型在零样本长文档证据检索任务中的适用性。
-【依据片段】We aim to assess the applicability of large language models (LLMs) in the task of zero-shot long document evidence retrieval, owing to their unprecedented performance across various NLP tasks.
-【应引用的真实来源】['2311.13565']
-【陷阱设计】把论文 A（2311.13565）的成果「We aim to assess the applicability of large language models ...」说成论文 B（2407.15352）的工作，考察溯源检测能否纠正归属。
-【被冒用论文】2407.15352 《MAVEN-Fact: A Large-scale Event Factuality Detection Dataset》
-【真正来源论文】2311.13565 《Drilling Down into the Discourse Structure with LLMs for Long Document Question Answering》
+
+【问题】
+    MAVEN-Fact（arXiv:2407.15352）这篇论文是不是还研究了零样本长文档证据检索，并评估了大语言模型在该任务上的适用性？能具体说说
+    他们是怎么评估LLM在零样本长文档证据检索中表现的吗？
+
+【参考答案】
+    该研究并非出自MAVEN-Fact（arXiv:2407.15352）。MAVEN-Fact主要提出了一个大规模事件事实性检测数据集，并未涉及零样本
+    长文档证据检索或评估LLM在该任务上的适用性。你所描述的工作实际出自论文《Drilling Down into the Discourse
+    Structure with LLMs for Long Document Question Answering》（arXiv:2311.13565
+    ），该论文旨在评估大语言模型在零样本长文档证据检索任务中的适用性。
+
+【成果真正来源】arXiv:2311.13565 《Drilling Down into the Discourse Structure with LLMs for Long Document Question Answering》
+【来源论文摘要（▸ 标出被搬走的片段所在行）】
+    We address the task of evidence retrieval for long document question
+    answering, which involves locating relevant paragraphs within a document
+  ▸ to answer a question. We aim to assess the applicability of large language
+  ▸ models (LLMs) in the task of zero-shot long document evidence retrieval,
+  ▸ owing to their unprecedented performance across various NLP tasks.
+    However, currently the LLMs can consume limited context lengths as input,
+    thus providing document chunks as inputs might overlook the global context
+    while missing out on capturing the inter-segment dependencies. Moreover,
+    directly feeding the large input sets can incur significant computational
+    costs, particularly when processing the entire document (and potentially
+    incurring monetary expenses with enterprise APIs like OpenAI's GPT
+    variants). To address these challenges, we propose a suite of techniques
+    that exploit the discourse structure commonly found in documents. By
+    utilizing this structure, we create a condensed representation of the
+    document, enabling a more comprehensive understanding and analysis of
+    relationships between different parts. We retain $99.6\%$ of the best
+    zero-shot approach's performance, while processing only $26\%$ of the
+    total tokens used by the best approach in the information seeking evidence
+    retrieval setup. We also show how our approach can be combined with
+    \textit{self-ask} reasoning agent to achieve best zero-shot performance in
+    complex multi-hop question answering, just $\approx 4\%$ short of
+    zero-shot performance using gold evidence.
+
+【被冒用论文】arXiv:2407.15352 《MAVEN-Fact: A Large-scale Event Factuality Detection Dataset》
+【被冒用论文摘要】
+    Event Factuality Detection (EFD) task determines the factuality of textual
+    events, i.e., classifying whether an event is a fact, possibility, or
+    impossibility, which is essential for faithfully understanding and
+    utilizing event knowledge. However, due to the lack of high-quality
+    large-scale data, event factuality detection is under-explored in event
+    understanding research, which limits the development of EFD community. To
+    address these issues and provide faithful event understanding, we
+    introduce MAVEN-Fact, a large-scale and high-quality EFD dataset based on
+    the MAVEN dataset. MAVEN-Fact includes factuality annotations of 112,276
+    events, making it the largest EFD dataset. Extensive experiments
+    demonstrate that MAVEN-Fact is challenging for both conventional
+    fine-tuned models and large language models (LLMs). Thanks to the
+    comprehensive annotations of event arguments and relations in MAVEN,
+    MAVEN-Fact also supports some further analyses and we find that adopting
+    event arguments and relations helps in event factuality detection for
+    fine-tuned models but does not benefit LLMs. Furthermore, we preliminarily
+    study an application case of event factuality detection and find it helps
+    in mitigating event-related hallucination in LLMs. Our dataset and codes
+    can be obtained from \url{https://github.com/lcy2723/MAVEN-FACT}
+
+【判要点】确认被搬走的成果确实属于来源论文、且被冒用论文摘要里没有该工作。
+
 【期望行为】指出该成果不属于所引用论文，纠正归属到真正的来源论文，而非顺着错误前提作答。
 【机器校验】{"source_evidence_verbatim_in_source_abstract": true, "evidence_absent_from_target_abstract": true}
-【重点核对】① 被搬走的成果是否确实出自 source 论文 ② target 论文是否确实没做该工作 ③ 问题是否自然（不像刻意栽赃）
+【重点核对】被搬走的成果是否确实出自来源论文、被冒用论文是否确实没做该工作、问题是否自然
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [39/40] T3-0015  |  trap_mismatch  |  mismatch_probe  |  难度 hard  |  领域 cs.CL
-【问题】我最近看到 arXiv 2401.03205 这篇论文（The Dawn After the Dark: An Empirical Study on Factuality Hallucination in Large Language Models），它好像提出了一个叫 NeuroFaith 的方法，用来评估 LLM 自解释的忠实性，通过内部表示对齐来判断自然语言解释是否真实反映模型的推理过程。能详细说说 NeuroFaith 是怎么实现内部表示对齐的吗？它的评估指标是什么？
-【参考答案】您提到的 NeuroFaith 并非 arXiv 2401.03205 的工作。arXiv 2401.03205 是关于 LLM 事实性幻觉的实证研究，主要构建了 HaluEval 2.0 基准，并分析幻觉的检测、来源与缓解，并未提出 NeuroFaith 或涉及自解释忠实性的内部表示对齐。NeuroFaith 实际出自论文《NeuroFaith: Evaluating LLM Self-Explanation Faithfulness via Internal Representation Alignment》（arXiv ID: 2506.09277），该工作关注自然语言解释可能无法准确反映模型实际推理过程，从而缺乏忠实性的问题，并提出了基于内部表示对齐的评估方法。
-【依据片段】However, these natural language explanations may not accurately reflect the model's actual reasoning process, pinpointing a lack of faithfulness.
-【应引用的真实来源】['2506.09277']
-【陷阱设计】把论文 A（2506.09277）的成果「However, these natural language explanations may not accurat...」说成论文 B（2401.03205）的工作，考察溯源检测能否纠正归属。
-【被冒用论文】2401.03205 《The Dawn After the Dark: An Empirical Study on Factuality Hallucination in Large Language Models》
-【真正来源论文】2506.09277 《NeuroFaith: Evaluating LLM Self-Explanation Faithfulness via Internal Representation Alignment》
+
+【问题】
+    我最近看到arXiv 2401.03205这篇论文（The Dawn After the Dark: An Empirical Study on
+    Factuality Hallucination in Large Language Models），它好像提出了一个叫NeuroFaith的方法，
+    用来评估LLM自解释的忠实性，通过内部表示对齐来判断自然语言解释是否真实反映模型的推理过程。能详细说说NeuroFaith是怎么实现内部表示对齐的吗
+    ？它的评估指标是什么？
+
+【参考答案】
+    您提到的NeuroFaith并非arXiv 2401.03205的工作。arXiv 2401.03205是关于LLM事实性幻觉的实证研究，主要构建了
+    HaluEval 2.0基准，并分析幻觉的检测、来源与缓解，并未提出NeuroFaith或涉及自解释忠实性的内部表示对齐。NeuroFaith实际出
+    自论文《NeuroFaith: Evaluating LLM Self-Explanation Faithfulness via Internal
+    Representation Alignment》（arXiv ID: 2506.09277），该工作关注自然语言解释可能无法准确反映模型实际推理过
+    程，从而缺乏忠实性的问题，并提出了基于内部表示对齐的评估方法。
+
+【成果真正来源】arXiv:2506.09277 《NeuroFaith: Evaluating LLM Self-Explanation Faithfulness via Internal Representation Alignment》
+【来源论文摘要（▸ 标出被搬走的片段所在行）】
+    Large Language Models (LLMs) can generate plausible free text
+  ▸ self-explanations to justify their answers. However, these natural
+  ▸ language explanations may not accurately reflect the model's actual
+  ▸ reasoning process, pinpointing a lack of faithfulness. Existing
+    faithfulness evaluation methods rely primarily on behavioral tests or
+    computational block analysis without examining the semantic content of
+    internal neural representations. This paper proposes NeuroFaith, a
+    flexible framework that measures the faithfulness of LLM free text
+    self-explanation by identifying key concepts within explanations and
+    mechanistically testing whether these concepts actually influence the
+    model's predictions. We show the versatility of NeuroFaith across 2-hop
+    reasoning and classification tasks. Additionally, we develop a linear
+    faithfulness probe based on NeuroFaith to detect unfaithful
+    self-explanations from representation space and improve faithfulness
+    through steering. NeuroFaith provides a principled approach to evaluating
+    and enhancing the faithfulness of LLM free text self-explanations,
+    addressing critical needs for trustworthy AI systems.
+
+【被冒用论文】arXiv:2401.03205 《The Dawn After the Dark: An Empirical Study on Factuality Hallucination in Large Language Models》
+【被冒用论文摘要】
+    In the era of large language models (LLMs), hallucination (i.e., the
+    tendency to generate factually incorrect content) poses great challenge to
+    trustworthy and reliable deployment of LLMs in real-world applications. To
+    tackle the LLM hallucination, three key questions should be well studied:
+    how to detect hallucinations (detection), why do LLMs hallucinate
+    (source), and what can be done to mitigate them (mitigation). To address
+    these challenges, this work presents a systematic empirical study on LLM
+    hallucination, focused on the the three aspects of hallucination
+    detection, source and mitigation. Specially, we construct a new
+    hallucination benchmark HaluEval 2.0, and designs a simple yet effective
+    detection method for LLM hallucination. Furthermore, we zoom into the
+    different training or utilization stages of LLMs and extensively analyze
+    the potential factors that lead to the LLM hallucination. Finally, we
+    implement and examine a series of widely used techniques to mitigate the
+    hallucinations in LLMs. Our work has led to several important findings to
+    understand the hallucination origin and mitigate the hallucinations in
+    LLMs. Our code and data can be accessed at
+    https://github.com/RUCAIBox/HaluEval-2.0.
+
+【判要点】确认被搬走的成果确实属于来源论文、且被冒用论文摘要里没有该工作。
+
 【期望行为】指出该成果不属于所引用论文，纠正归属到真正的来源论文，而非顺着错误前提作答。
 【机器校验】{"source_evidence_verbatim_in_source_abstract": true, "evidence_absent_from_target_abstract": true}
-【重点核对】① 被搬走的成果是否确实出自 source 论文 ② target 论文是否确实没做该工作 ③ 问题是否自然（不像刻意栽赃）
+【重点核对】被搬走的成果是否确实出自来源论文、被冒用论文是否确实没做该工作、问题是否自然
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
 
 ------------------------------------------------------------------------------
 [40/40] T3-0013  |  trap_mismatch  |  mismatch_probe  |  难度 hard  |  领域 cs.CL
-【问题】我看到一篇 arXiv 论文（ID: 2404.09763）KG-CTG: Citation Generation through Knowledge Graph-guided Large Language Models，里面提到通过减少对目标端信息的过度使用可以缓解幻觉。请问这个缓解幻觉的具体方法是什么？在同时机器翻译中效果如何？
-【参考答案】该成果并非出自 KG-CTG（arXiv:2404.09763），而是出自论文 On the Hallucination in Simultaneous Machine Translation（arXiv:2406.07239）。KG-CTG 研究的是引用文本生成，并未涉及同时机器翻译中的幻觉缓解。arXiv:2406.07239 通过实验发现，减少对目标端信息的过度使用可以缓解同时机器翻译中的幻觉现象。
-【依据片段】Intensive experiments demonstrate some valuable findings and particularly show that it is possible to alleviate hallucination by decreasing the over usage of target-side information for SiMT.
-【应引用的真实来源】['2406.07239']
-【陷阱设计】把论文 A（2406.07239）的成果「Intensive experiments demonstrate some valuable findings and...」说成论文 B（2404.09763）的工作，考察溯源检测能否纠正归属。
-【被冒用论文】2404.09763 《KG-CTG: Citation Generation through Knowledge Graph-guided Large Language Models》
-【真正来源论文】2406.07239 《On the Hallucination in Simultaneous Machine Translation》
+
+【问题】
+    我看到一篇arXiv论文（ID: 2404.09763）KG-CTG: Citation Generation through Knowledge
+    Graph-guided Large Language Models，里面提到通过减少对目标端信息的过度使用可以缓解幻觉。请问这个缓解幻觉的具体方法
+    是什么？在同时机器翻译中效果如何？
+
+【参考答案】
+    该成果并非出自KG-CTG（arXiv:2404.09763），而是出自论文On the Hallucination in Simultaneous
+    Machine Translation（arXiv:2406.07239）。KG-CTG研究的是引用文本生成，并未涉及同时机器翻译中的幻觉缓解。
+    arXiv:2406.07239通过实验发现，减少对目标端信息的过度使用可以缓解同时机器翻译中的幻觉现象。
+
+【成果真正来源】arXiv:2406.07239 《On the Hallucination in Simultaneous Machine Translation》
+【来源论文摘要（▸ 标出被搬走的片段所在行）】
+    It is widely known that hallucination is a critical issue in Simultaneous
+    Machine Translation (SiMT) due to the absence of source-side information.
+    While many efforts have been made to enhance performance for SiMT, few of
+    them attempt to understand and analyze hallucination in SiMT. Therefore,
+    we conduct a comprehensive analysis of hallucination in SiMT from two
+    perspectives: understanding the distribution of hallucination words and
+  ▸ the target-side context usage of them. Intensive experiments demonstrate
+  ▸ some valuable findings and particularly show that it is possible to
+  ▸ alleviate hallucination by decreasing the over usage of target-side
+  ▸ information for SiMT.
+
+【被冒用论文】arXiv:2404.09763 《KG-CTG: Citation Generation through Knowledge Graph-guided Large Language Models》
+【被冒用论文摘要】
+    Citation Text Generation (CTG) is a task in natural language processing
+    (NLP) that aims to produce text that accurately cites or references a
+    cited document within a source document. In CTG, the generated text draws
+    upon contextual cues from both the source document and the cited paper,
+    ensuring accurate and relevant citation information is provided. Previous
+    work in the field of citation generation is mainly based on the text
+    summarization of documents. Following this, this paper presents a
+    framework, and a comparative study to demonstrate the use of Large
+    Language Models (LLMs) for the task of citation generation. Also, we have
+    shown the improvement in the results of citation generation by
+    incorporating the knowledge graph relations of the papers in the prompt
+    for the LLM to better learn the relationship between the papers. To assess
+    how well our model is performing, we have used a subset of standard S2ORC
+    dataset, which only consists of computer science academic research papers
+    in the English Language. Vicuna performs best for this task with 14.15
+    Meteor, 12.88 Rouge-1, 1.52 Rouge-2, and 10.94 Rouge-L. Also, Alpaca
+    performs best, and improves the performance by 36.98% in Rouge-1, and
+    33.14% in Meteor by including knowledge graphs.
+
+【判要点】确认被搬走的成果确实属于来源论文、且被冒用论文摘要里没有该工作。
+
 【期望行为】指出该成果不属于所引用论文，纠正归属到真正的来源论文，而非顺着错误前提作答。
 【机器校验】{"source_evidence_verbatim_in_source_abstract": true, "evidence_absent_from_target_abstract": true}
-【重点核对】① 被搬走的成果是否确实出自 source 论文 ② target 论文是否确实没做该工作 ③ 问题是否自然（不像刻意栽赃）
+【重点核对】被搬走的成果是否确实出自来源论文、被冒用论文是否确实没做该工作、问题是否自然
+
 【判定】通过 / 修改 / 废弃：____________
-【改动说明】____________________________
