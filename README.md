@@ -16,9 +16,15 @@
 ```
 vericite/
 ├── data/                # arXiv 原始数据、解析后的文本
+│   ├── arxiv_raw.jsonl      # 论文元数据（ID/标题/摘要/作者/分类）
+│   └── raw/                 # arXiv API 原始 Atom XML 缓存
 ├── corpus/              # 切分后的语料 + 向量库
-├── eval/                # 评测集（正常题 + 幻觉陷阱题）
+├── eval/                # 评测集
+│   ├── schema.json          # 单条记录的结构定义（字段/枚举/标签期望）
+│   ├── build/               # 评测集构建脚本（拉数据 → 出题 → 合并自检）
+│   └── v1/                  # 评测集 v1 产物
 ├── src/
+│   ├── common/          # 共用工具（LLM 客户端）
 │   ├── ingest/          # arXiv 拉取 + PDF 解析
 │   ├── retrieval/       # 嵌入 + 检索
 │   ├── generation/      # LLM 问答 + Prompt 模板
@@ -36,6 +42,55 @@ vericite/
 - **向量库**：FAISS / Chroma / SQLite（待定）
 - **Web 演示层**：Flask / FastAPI
 
+## 评测集构建
+
+评测集是全篇实验的地基，结构定义见 `eval/schema.json`。设计要点：
+
+**四类题目（共 400 条）**
+
+| 类别 | 条数 | 考察点 | 期望检测标签（存在性/支持度/溯源） |
+|---|---|---|---|
+| `normal` 正常题 | 250 | 文献真实、内容支撑、出处对应 | pass / pass / pass |
+| `trap_nonexistent` 文献不存在 | 60 | 编造标题 + 伪 arXiv ID，问其内容 | fail / na / na |
+| `trap_unsupported` 存在但不支持 | 50 | 真实论文，追问摘要未报告的信息 | pass / fail / na |
+| `trap_mismatch` 张冠李戴 | 40 | 把 A 论文的成果安到 B 论文头上 | pass / fail / fail |
+
+**每道题的机器校验留痕**（记录在 `verification` 字段，论文中可据此说明评测集可信度）：
+
+- 正常题：`evidence` 必须是所引论文摘要中**逐字出现**的连续片段，脚本按子串比对；同时检查问题上不含「这篇论文」这类含糊指代
+- T1：伪标题经 arXiv 标题精确检索确认 `totalResults=0`；伪 ID 经 arXiv `id_list` 批量查询确认无对应记录
+- T2：模型必须给出 `absent_keywords`，脚本逐个确认这些词**确实不在**摘要中
+- T3：被搬走的片段逐字出自 source 论文摘要，且**不得出现**在 target 论文摘要里
+
+**构建流程（可复现）**
+
+```bash
+# 1. 拉取语料（143 篇 cs.CL/cs.IR，2023-2025，RAG/LLM/幻觉相关）
+python src/ingest/fetch_arxiv.py --target 150
+
+# 2. 生成正常题候选池（LLM 基于真实摘要出题，带 evidence 逐字校验）
+python eval/build/normal.py --workers 6
+
+# 3. 构造三类陷阱题（程序化设计 + 程序化校验）
+python eval/build/traps.py --n1 60 --n2 50 --n3 40
+
+# 4. 合并 + 结构自检（字段完整性、标签与类型一致性、引用 ID 是否在语料内等）
+python eval/build/merge.py
+
+# 5. 导出人工抽检单（分层抽样约 10%）
+python eval/build/sample_for_review.py
+```
+
+随机种子固定为 `20260922`，陷阱题配对与抽检抽样均可复现。LLM 密钥放在项目根目录 `.env`（已 gitignore，模板见 `.env.example`）。
+
 ## 状态
 
-方向已定稿（2026-09-22），当前处于评测集构建 + 开题报告阶段。
+方向已定稿（2026-09-22）。
+
+- [x] 项目骨架、语料拉取链路
+- [x] 评测集 schema 定义
+- [x] 评测集 v1 构建（400 条：正常题 250 + 三类陷阱题 150）
+- [ ] 评测集人工抽检
+- [ ] 开题报告
+- [ ] 系统 baseline（纯 LLM → RAG）
+
