@@ -383,6 +383,18 @@ def main() -> int:
         print(f"伪标题: 复核 {rc['titles_checked']} 个，确认不存在 {rc['titles_still_nonexistent']}")
         for e in rc["errors"]:
             print("  [注意]", e)
+    elif STATS.exists():
+        # 只重造了 T2 之类的情形：T1 记录逐字节未变，沿用上一轮复核结果，
+        # 避免重复打 arXiv 接口（密集请求会被 429）。若 T1 有改动请显式加 --verify-remote。
+        try:
+            prev = json.loads(STATS.read_text(encoding="utf-8"))
+            if prev.get("remote_recheck"):
+                carried = dict(prev["remote_recheck"])
+                carried["note"] = "T1 记录未变，沿用上一轮向 arXiv 的独立复核结果"
+                stats["remote_recheck"] = carried
+                print("\n[沿用] T1 的 arXiv 独立复核结果（本轮 T1 未改动）")
+        except Exception:  # noqa: BLE001
+            pass
 
     print("\n===== 自检结果 =====")
     print(f"类别分布: {dict(by_type)}")
