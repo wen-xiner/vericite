@@ -63,6 +63,17 @@ def norm_space(s: str) -> str:
     return re.sub(r"\s+", " ", s or "").strip().lower()
 
 
+def _is_latin_dominant(text: str) -> bool:
+    """判断文本是否以拉丁字母为主（本语料摘要全为英文）。
+
+    用于 T2 的语言一致性校验：摘要为英文时，absent_keywords 必须给英文词，
+    否则「中文词不在英文摘要里」是恒真的，校验会空转。
+    """
+    latin = len(re.findall(r"[A-Za-z]", text))
+    cjk = len(re.findall(r"[\u3000-\u9fff]", text))
+    return latin > cjk
+
+
 def http_get(url: str, retries: int = 3, timeout: int = 60) -> bytes:
     last: Exception | None = None
     for attempt in range(1, retries + 1):
@@ -296,6 +307,10 @@ T2_SYSTEM = """你是学术文献问答评测集的出题专家，正在构造�
 2. 禁止问「摘要里没有」这种元问题，要像一个真实读者在追问细节。
 3. absent_keywords：列出 2~4 个关键词，它们是你这个问题的核心概念，
    且这些词【绝对不会出现】在该论文摘要中。脚本会逐个校验，必须诚实。
+   **关键**：关键词必须用【与摘要相同的语言】给出 —— 本语料摘要全部是英文，
+   因此这里必须给**英文术语/词组**（例如 pretrained model、feature extractor、
+   ablation study），**禁止使用中文词**。中文词在英文摘要里必然查不到，
+   写成中文等于没校验，会被脚本判为不合格。
 4. 参考答案要说清：该论文摘要中未报告这一信息，不能凭论文主题外推，
    如需该信息应查阅论文全文或原文其他章节。
 5. 为了制造「看似有据」的错觉，问题里可以带上论文的真实标题和 arXiv ID。
@@ -317,11 +332,17 @@ T2_USER = """真实论文：
 
 
 def build_t2(client: LLMClient, papers: list[dict], n: int) -> list[dict]:
-    """T2：真实论文 + 摘要无法回答的问题（用 absent_keywords 程序化校验）。"""
+    """T2：真实论文 + 摘要无法回答的问题（用 absent_keywords 程序化校验）。
+
+    校验必须同语言才有意义：摘要为英文，关键词却给中文的话，"中文词不在英文摘要里"
+    是恒真的，校验会空转（2026-09-22 实测 50 条里有 25 条犯了这个问题，
+    因此加了语言一致性检查并且提示词明确要求英文关键词）。
+    """
     pool = papers[:]
     random.Random(SEED).shuffle(pool)
-    pool = pool[: n * 2]
+    pool = pool[: n * 4]  # 过量投喂：不合格的会被丢掉，要保证最终凑够 n 条通过校验的
     recs: list[dict] = []
+    n_bad = 0
 
     def work(p: dict) -> dict | None:
         cli = LLMClient(load_env())
@@ -339,6 +360,9 @@ def build_t2(client: LLMClient, papers: list[dict], n: int) -> list[dict]:
     with ThreadPoolExecutor(max_workers=5) as pool_exec:
         futures = [pool_exec.submit(work, p) for p in pool]
         for fut in as_completed(futures):
+            if len(recs) >= n:
+                pool_exec.shutdown(wait=False, cancel_futures=True)
+                break
             d = fut.result()
             if not d:
                 continue
@@ -346,11 +370,28 @@ def build_t2(client: LLMClient, papers: list[dict], n: int) -> list[dict]:
             ab = norm_space(p["abstract"])
             kws = [k.strip() for k in d["absent_keywords"] if k and k.strip()]
             bad_kws = [k for k in kws if norm_space(k) in ab]
+            # 语言一致性：摘要以拉丁字母为主时，关键词不能是纯中文（纯中文词在英文摘要里
+            # 必然查不到，校验会空转）。注意不要用 [A-Za-z]{2,}，否则 7B / 13B / GPT-4
+            # 这类带字母的数字标签会被误判为「非英文」。
+            latin_abstract = _is_latin_dominant(ab)
+            bad_lang = [k for k in kws
+                        if latin_abstract and not re.search(r"[A-Za-z]", k)]
             problems = []
             if not kws:
                 problems.append("absent_keywords 为空，无法校验")
             if bad_kws:
                 problems.append(f"这些关键词实际出现在摘要中，陷阱不成立: {bad_kws}")
+            if bad_lang:
+                problems.append(f"关键词语言与摘要不一致（摘要为英文，须给英文关键词否则校验空转）: {bad_lang}")
+            verified = (not bad_kws) and (not bad_lang) and bool(kws)
+
+            # 不合格的直接丢回重做，不占正式名额 —— 宁可多花调用，
+            # 也不要让「校验未过」的题混进正式集（正式集里 T2 应全部机器可证）
+            if not verified:
+                n_bad += 1
+                print(f"  [T2] {p['arxiv_id']} 校验未过，丢弃重来（{'；'.join(problems)[:60]}）")
+                continue
+
             recs.append({
                 "type": "trap_unsupported",
                 "question": d["question"].strip(),
@@ -376,15 +417,15 @@ def build_t2(client: LLMClient, papers: list[dict], n: int) -> list[dict]:
                 "detection_label": {"existence": "pass", "support": "fail", "traceability": "na"},
                 "expected_behavior": "确认论文存在，但明确指出摘要未支撑该论断，拒绝按论文主题外推。",
                 "annotator": "auto",
-                "status": "draft" if not problems else "needs_review",
+                "status": "draft",
                 "created": date.today().isoformat(),
-                "notes": "；".join(problems) or None,
+                "notes": None,
                 "_absent_keywords": kws,
-                "_absent_verified": not bad_kws and bool(kws),
+                "_absent_verified": True,
             })
-            print(f"  [T2] {p['arxiv_id']} → 已积累 {len(recs)}/{n}")
-            if len(recs) >= n:
-                break
+            print(f"  [T2] {p['arxiv_id']} → 通过 {len(recs)}/{n}（已丢弃不合格 {n_bad} 条）")
+    if len(recs) < n:
+        print(f"  [T2] 注意：候选池耗尽，仅得到 {len(recs)}/{n} 条通过校验的题")
     return recs[:n]
 
 
@@ -555,6 +596,17 @@ def main() -> int:
         print(f"===== T3 张冠李戴（目标 {args.n3} 条）=====")
         recs += build_t3(LLMClient(cfg), papers, args.n3, rng)
         print()
+
+    # --only 只重造某一类时，把其余类别从已有产物里保留下来，避免覆盖掉
+    if args.only:
+        rebuilt = {"t1": "trap_nonexistent", "t2": "trap_unsupported",
+                   "t3": "trap_mismatch"}[args.only]
+        if OUT.exists():
+            kept = [json.loads(l) for l in OUT.open(encoding="utf-8")
+                    if json.loads(l)["type"] != rebuilt]
+            print(f"保留既有陷阱题 {len(kept)} 条（{rebuilt} 之外的类别）")
+            order = {"trap_nonexistent": 0, "trap_unsupported": 1, "trap_mismatch": 2}
+            recs = sorted(kept + recs, key=lambda r: order.get(r["type"], 9))
 
     with OUT.open("w", encoding="utf-8", newline="\n") as f:
         for r in recs:
