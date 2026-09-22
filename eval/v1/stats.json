@@ -1,0 +1,90 @@
+{
+  "version": "v1",
+  "created": "2026-09-22",
+  "corpus": {
+    "papers": 143,
+    "source": "data/arxiv_raw.jsonl",
+    "domains": {
+      "cs.CL": 109,
+      "cs.IR": 14,
+      "cs.CV": 7,
+      "cs.AI": 6,
+      "cs.LG": 3,
+      "cs.DL": 2,
+      "cs.SD": 1,
+      "cs.HC": 1
+    },
+    "years": {
+      "2023": 20,
+      "2024": 72,
+      "2025": 51
+    }
+  },
+  "seed": 20260922,
+  "total": 400,
+  "target_distribution": {
+    "normal": 250,
+    "trap_nonexistent": 60,
+    "trap_unsupported": 50,
+    "trap_mismatch": 40
+  },
+  "by_type": {
+    "normal": 250,
+    "trap_nonexistent": 60,
+    "trap_unsupported": 50,
+    "trap_mismatch": 40
+  },
+  "by_question_form": {
+    "method": 85,
+    "factual": 50,
+    "numeric": 45,
+    "comparison": 40,
+    "causal": 30,
+    "nonexistent_probe": 60,
+    "unsupported_probe": 50,
+    "mismatch_probe": 40
+  },
+  "by_difficulty": {
+    "medium": 158,
+    "easy": 202,
+    "hard": 40
+  },
+  "by_domain": {
+    "cs.CL": 324,
+    "cs.IR": 31,
+    "cs.CV": 16,
+    "cs.AI": 14,
+    "cs.LG": 7,
+    "cs.DL": 4,
+    "cs.SD": 2,
+    "cs.HC": 2
+  },
+  "by_status": {
+    "draft": 398,
+    "needs_review": 2
+  },
+  "normal_candidates_pool": 286,
+  "normal_dropped": 36,
+  "cross_type_duplicates_removed": 0,
+  "checks": {
+    "evidence_pass": 250,
+    "mismatch_pass": 40
+  },
+  "problems": [],
+  "distribution_matches_target": {
+    "normal": true,
+    "trap_nonexistent": true,
+    "trap_unsupported": true,
+    "trap_mismatch": true
+  },
+  "remote_recheck": {
+    "ids_checked": 30,
+    "titles_checked": 30,
+    "ids_still_nonexistent": 30,
+    "titles_still_nonexistent": 30,
+    "ids_that_now_exist": [],
+    "titles_that_now_exist": [],
+    "errors": [],
+    "titles_unverified": []
+  }
+}
