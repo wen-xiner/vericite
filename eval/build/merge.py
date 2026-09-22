@@ -266,6 +266,29 @@ def remote_recheck_t1(records: list[dict]) -> dict:
     return result
 
 
+def load_previous_reviews(path: Path) -> dict[str, dict]:
+    """索引上一轮已有人工抽检结论的题目，供重新生成时沿用。
+
+    用**题干文本**而不是 qid 做键：重建数据集时 qid 会重排（T2 重建后
+    T2-0001 已经不是原来那条了），只有题干才是内容的真实标识。
+    否则一旦重跑 merge，人工判定就会被悄悄冲掉。
+    """
+    if not path.exists():
+        return {}
+    out: dict[str, dict] = {}
+    for line in path.open(encoding="utf-8"):
+        line = line.strip()
+        if not line:
+            continue
+        r = json.loads(line)
+        if r.get("review") or r.get("status") not in (None, "draft"):
+            out[norm_space(r["question"])] = {
+                "status": r.get("status"),
+                "review": r.get("review"),
+            }
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="合并并自检评测集 v1")
     ap.add_argument("--dry-run", action="store_true", help="只输出自检结果，不写文件")
@@ -337,6 +360,20 @@ def main() -> int:
     if cross_dups:
         records = deduped_records
 
+    # 沿用上一轮的人工抽检结论（按题干匹配），别让重跑丢判定
+    prev = load_previous_reviews(OUT)
+    carried = 0
+    if prev:
+        for r in records:
+            hit = prev.get(norm_space(r["question"]))
+            if hit and hit.get("status") and r["status"] == "draft":
+                r["status"] = hit["status"]
+                if hit.get("review"):
+                    r["review"] = hit["review"]
+                carried += 1
+        if carried:
+            print(f"[沿用] 上一轮人工抽检结论 {carried} 条（按题干匹配）")
+
     result = verify(records, corpus_ids, abs_by_id)
     problems = result["problems"] + cross_dups
 
@@ -373,6 +410,24 @@ def main() -> int:
 
     target = stats["target_distribution"]
     stats["distribution_matches_target"] = {k: by_type.get(k, 0) == v for k, v in target.items()}
+
+    # 把人工抽检报告摘要挂进 stats，便于一处看全「机器校验 + 人工抽检」两块
+    review_result = ROOT / "eval" / "v1" / "review_result.json"
+    if review_result.exists():
+        try:
+            rr = json.loads(review_result.read_text(encoding="utf-8"))
+            stats["human_review"] = {
+                "round": rr.get("round"),
+                "date": rr.get("date"),
+                "sampled": rr.get("scope", {}).get("sampled"),
+                "full_set": rr.get("scope", {}).get("full_set"),
+                "ratio": rr.get("scope", {}).get("ratio"),
+                "counts": rr.get("counts"),
+                "pass_rate": rr.get("pass_rate"),
+                "scope_note": rr.get("scope", {}).get("note"),
+            }
+        except Exception:  # noqa: BLE001
+            pass
 
     if args.verify_remote:
         print("\n===== 独立远程复核（向 arXiv 重新校验 T1）=====")
