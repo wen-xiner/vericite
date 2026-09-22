@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VeriCite 评测集单条记录",
+  "version": "1.0",
+  "created": "2026-09-22",
+  "description": "VeriCite 学术文献研读问答评测集。每行一条 JSON（JSONL），含正常题与三类幻觉陷阱题，并给出幻觉三层检测的期望标签，用于第 4 章对比实验、消融实验与检测方法自评。",
+  "storage": {
+    "normal": "eval/v1/normal.jsonl",
+    "traps": "eval/v1/traps.jsonl",
+    "merged": "eval/v1/questions.jsonl"
+  },
+  "type_distribution": {
+    "normal": 250,
+    "trap_nonexistent": 60,
+    "trap_unsupported": 50,
+    "trap_mismatch": 40,
+    "total": 400
+  },
+  "fields": {
+    "qid": {
+      "type": "string",
+      "pattern": "^(N|T1|T2|T3)-[0-9]{4}$",
+      "description": "题目唯一编号。N=正常题，T1=文献不存在，T2=存在但不支持，T3=张冠李戴。"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["normal", "trap_nonexistent", "trap_unsupported", "trap_mismatch"],
+      "description": "题目类别，决定 detection_label 的期望值与统计口径。"
+    },
+    "question": {
+      "type": "string",
+      "description": "交给系统的用户问题（中文提问、文献为英文，贴近真实研读场景）。"
+    },
+    "reference_answer": {
+      "type": "string",
+      "description": "期望的参考回答。正常题为可溯源的实质答案；陷阱题为正确的『拒答/澄清』式回答（如『该文献不存在』『原文未报告该结论』）。"
+    },
+    "gold_arxiv_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "参考答案应引用的真实 arXiv ID。正常题=支撑该答案的论文；T1=空数组（无真实来源）；T2/T3=被引用的真实论文 ID（用于检验系统是否错误地把它当作支撑）。"
+    },
+    "evidence": {
+      "type": ["string", "null"],
+      "description": "论文摘要中支撑参考回答的原文片段（逐字截取）。T1 为 null。这是人工抽检与自动溯源校验的锚点。"
+    },
+    "question_form": {
+      "type": "string",
+      "enum": ["factual", "method", "comparison", "numeric", "causal", "nonexistent_probe", "unsupported_probe", "mismatch_probe"],
+      "description": "问法类型，用于第 4 章按题型做细分分析。后三种为陷阱题专用。"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"],
+      "description": "难度（按答案所需推理步数与检索难度判定），供分层分析。"
+    },
+    "domain": {
+      "type": "string",
+      "description": "题目所属 arXiv 主分类（如 cs.CL、cs.IR）。"
+    },
+    "trap": {
+      "type": ["object", "null"],
+      "description": "陷阱题专有字段，记录陷阱的构造方式，便于复现与失败模式分析；正常题为 null。",
+      "properties": {
+        "kind": { "type": "string", "enum": ["nonexistent", "unsupported", "mismatch"] },
+        "fabricated_id": { "type": ["string", "null"], "description": "T1：编造的 arXiv ID（格式合法但不存在）。" },
+        "fabricated_title": { "type": ["string", "null"], "description": "T1：编造的论文标题（术语真实、组合不存在的论文）。" },
+        "target_paper": { "type": ["string", "null"], "description": "T2/T3：被冒用或被追问的真实 arXiv ID。" },
+        "target_title": { "type": ["string", "null"], "description": "T2/T3：被冒用论文的标题。" },
+        "source_paper": { "type": ["string", "null"], "description": "T3：贡献被张冠李戴挪走的真实 arXiv ID。" },
+        "source_title": { "type": ["string", "null"], "description": "T3：贡献原本所属的论文标题。" },
+        "how": { "type": "string", "description": "一句话说明陷阱是怎么造的。" }
+      }
+    },
+    "detection_label": {
+      "type": "object",
+      "description": "幻觉三层检测的期望标签：existence（文献是否真实存在）、support（文献内容是否支撑论断）、traceability（论断与出处是否对应）。",
+      "properties": {
+        "existence": { "type": "string", "enum": ["pass", "fail", "na"] },
+        "support": { "type": "string", "enum": ["pass", "fail", "na"] },
+        "traceability": { "type": "string", "enum": ["pass", "fail", "na"] }
+      },
+      "required": ["existence", "support", "traceability"]
+    },
+    "expected_behavior": {
+      "type": "string",
+      "description": "理想系统应有的行为（如『明确指出该文献检索不到，不编造内容』），用于人工判分与前 4 章指标体系对接。"
+    },
+    "annotator": {
+      "type": "string",
+      "enum": ["auto", "manual"],
+      "description": "题目来源：auto=脚本/LLM 生成，manual=人工编写或人工重写。"
+    },
+    "verification": {
+      "type": "object",
+      "description": "机器校验留痕，用于在论文中说明评测集不是凭空生成、每条都过了程序化核查。字段随类型不同：normal=摘要逐字校验+问法自洽；trap_nonexistent=伪标题/伪 ID 经 arXiv 接口确认不存在；trap_unsupported=absent_keywords 经确认不在摘要中；trap_mismatch=来源片段逐字出自 source 且不出现在 target 摘要中。",
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "needs_review", "reviewed", "rejected"],
+      "description": "质量状态。draft=机器生成未复核；needs_review=机器校验未通过、必须人工复核；reviewed=人工复核通过、可计入正式实验；rejected=抽检不通过已废弃。"
+    },
+    "created": { "type": "string", "description": "生成日期 YYYY-MM-DD。" },
+    "notes": { "type": ["string", "null"], "description": "存疑点或后续修订备注。" }
+  },
+  "required": [
+    "qid", "type", "question", "reference_answer", "gold_arxiv_ids", "evidence",
+    "question_form", "difficulty", "domain", "trap", "detection_label",
+    "expected_behavior", "annotator", "verification", "status", "created", "notes"
+  ],
+  "label_expectation_by_type": {
+    "normal": {
+      "existence": "pass", "support": "pass", "traceability": "pass",
+      "说明": "文献真实、内容支撑、出处对应，三层全过。"
+    },
+    "trap_nonexistent": {
+      "existence": "fail", "support": "na", "traceability": "na",
+      "说明": "引用文献不存在，存在性检测必须命中；后续两层无从谈起。"
+    },
+    "trap_unsupported": {
+      "existence": "pass", "support": "fail", "traceability": "na",
+      "说明": "文献真实存在，但其内容不支持该论断 —— 只有支持度检测能抓住。"
+    },
+    "trap_mismatch": {
+      "existence": "pass", "support": "fail", "traceability": "fail",
+      "说明": "文献真实存在但答非所问，论断其实出自另一篇 —— 需溯源检测纠正。"
+    }
+  },
+  "gold_arxiv_ids_by_type": {
+    "normal": "支撑参考答案的真实论文 ID（唯一来源）。",
+    "trap_nonexistent": "空数组 —— 该文献不存在，任何被引 ID 都是幻觉。",
+    "trap_unsupported": "被引用但不足以支撑论断的真实论文 ID。",
+    "trap_mismatch": "论断的真正来源论文 ID（trap.target_paper 是被冒用者，两者不同）。"
+  }
+}
