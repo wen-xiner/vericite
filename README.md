@@ -164,7 +164,25 @@ python eval/build/record_review.py
 > 已实测三条更细的词面指标都不可分（示例：假阳性 `QA-RAG` 覆盖率 0.78 vs
 > 真阳性 `Mitigating ... via Dynamic Trust Calibration` 覆盖率 0.80；
 > 缩写否决规则又会误杀 `ALCE: ...` 这类"模型加了正确的系统缩写前缀"的真阳性）。
-> **所以第 4.6 节的定性是：词面阈值路线到此为止，要根治得上语义判官（见状态清单）。**
+>
+> **于是改用语义判官做佐证**（`src/experiments/judge_title_pairs.py`）：把「模型标题 +
+> 候选标题」成对给 LLM，只给这两串、问是否指同一篇（不给 ID / 问题 / 摘要）。18 条 = 18 次调用。
+> **结果：与人工逐条复核一致率 16/18 = 88.9%。**
+> 2 条不一致，且**分歧是系统性的、属口径之争**：
+> - 判官按「**这个标题能否唯一确定**这篇论文」判 → 尾部机制名/范围词不同 → 不是；
+> - 人工按「**被引的这篇文献是否真实存在**」判 → 主干逐字一致 → 是。
+>
+> 不一致的两条正是"主干一致、尾部被写错"：
+> `Mitigating Hallucination in LVLMs via Dynamic Trust Calibration`（真实是 `via Adaptive
+> Attention Calibration`，前 9 词完全一致）、
+> `Self-adaptive Retrieval-Augmented Generation`（漏了 `Multimodal`，同一回答另一处写对了）。
+> 两者判为「同一篇」还是「另一篇」，取决于第 4.6 节怎么定义这个态 ——
+> **这不是判官出错，而是 `exists_variant` 这一态本身夹在两个问题中间，模糊性不可消除。**
+>
+> 沿用人工口径（该态 18 条、精度 83%）作为**主线**，取判官的严口径只作对照：
+> 严口径下该态 18 → 13、精度 72%，判官判「不是」的 5 条回流 `fabricated`（141 → ~146）。
+> **本次采用"判官只做佐证、不改判定"**（判官结论见
+> `experiments/cache/title_pair_judge.json`），所以下面所有数字与主指标均未受影响。
 >
 > ✅ **对主指标无影响**（2026-09-23 核算）：所有含 `exists_variant` 的题目都因其它失败模式
 > （内容不支持 / 归属错误 / 未命中语料）已计为幻觉，唯一例外是口径 B 的 1 条，
@@ -228,6 +246,22 @@ python src/detection/existence.py --prewarm experiments/baseline_llm/judged.json
 
 # 2. 缓存齐了再刷指标（这一步不调 LLM）
 python src/experiments/run_eval.py --answers ... --refresh-layer1
+```
+
+**改判定规则 / 做复核时的三个配套工具**：
+
+```bash
+# 改了 looks_like_title 必跑：同时列「新增」（应为 0）和「删除」（逐条确认是否噪声）
+python src/experiments/check_extract_diff.py
+
+# fabricated 的二次核验：换更宽的检索式重查（3 词 AND + all: 全字段），找回"真实存在但标题写错"的
+python src/experiments/verify_unmatched.py --summary     # 增量、可断点续跑
+python backfill_second_pass.py --dry                     # 把人工确认成立的回灌进判定（改完要重跑 --refresh-layer1）
+
+# exists_variant 的语义判官佐证：只给两条标题，不改判定与指标
+python src/experiments/judge_title_pairs.py --dry        # 先列标题对，不调 LLM
+python src/experiments/judge_title_pairs.py              # 跑判官（18 次调用）
+python src/experiments/judge_title_pairs.py --summary    # 只看与人工的一致率
 ```
 
 核验结果落在 `experiments/cache/arxiv_exists.json`（入库），
@@ -349,10 +383,11 @@ temperature 0.2、同一套 system prompt（仅"是否追加诚实性约束"不�
 - [x] 第一层复核：抽取层收紧（多排除 12 条正文噪声、新增 0，差分核查工具
   `src/experiments/check_extract_diff.py` 兜底）+ 二次核验回灌（5 条，
   `src/experiments/verify_unmatched.py` + `backfill_second_pass.py`）后重跑两口径
-- [ ] `exists_variant` 的精度根治。**词面路线已试尽**：F1 阈值、5 词 AND 检索、
-  覆盖率、独特词对齐、缩写展开否决 —— 五条都验过，真/假区间完全重叠，不可分。
-  精度实测 15/18 ≈ 83%（软证据）。下一步只能上**语义判官**（把"模型标题 + 候选标题"
-  成对给 LLM 判"是否指同一篇"，18 条 ≈ 18 次调用，成本可忽略），属第 4.6 节
+- [x] `exists_variant` 的判据建设。词面路线已试尽（F1 阈值 / 5 词 AND 检索 / 覆盖率 /
+  独特词对齐 / 缩写展开否决 —— 五条都验过，真/假区间完全重叠）；改上**语义判官**做佐证，
+  与人工复核一致率 16/18 = 88.9%（`src/experiments/judge_title_pairs.py`）
+- [ ] 第 4.6 节需要**定义"同一篇"的口径**：判官与人工的 2 条分歧全在"标题能否唯一确定"
+  vs "被引文献是否存在"这一层。口径定了才能报该态的最终精度（人工口径 83% / 判官严口径 72%）
 - [ ] 知识库构建（PDF 拉取解析 / 切分 / 嵌入 / 向量库）
 - [ ] 检索与生成链路（召回 / 重排序 / 引用约束）
 - [ ] RAG 对比与消融实验
