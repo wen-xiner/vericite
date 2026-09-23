@@ -27,10 +27,15 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 import sys
 from collections import Counter
 from datetime import date
 from pathlib import Path
+
+
+def norm_space(s: str) -> str:
+    return re.sub(r"\s+", " ", s or "").strip()
 
 ROOT = Path(__file__).resolve().parents[2]
 V1 = ROOT / "eval" / "v1"
@@ -39,6 +44,22 @@ QUESTIONS = V1 / "questions.jsonl"
 RESULT = V1 / "review_result.json"
 
 ALLOWED = {"通过", "修改", "废弃"}
+
+
+def read_sheet(path: Path) -> tuple[list[dict], str]:
+    """读判定表，自动兼容 Excel 存盘后的编码。
+
+    坑：用中文版 Excel 直接保存 CSV，会把文件从 UTF-8 改成 GB18030（且去掉 BOM），
+    按 UTF-8 读会直接 UnicodeDecodeError。这里按 utf-8-sig → gb18030 依次尝试。
+    """
+    raw = path.read_bytes()
+    for enc in ("utf-8-sig", "utf-8", "gb18030"):
+        try:
+            text = raw.decode(enc)
+            return list(csv.DictReader(text.splitlines())), enc
+        except UnicodeDecodeError:
+            continue
+    raise RuntimeError(f"{path} 编码无法识别（已尝试 utf-8-sig / utf-8 / gb18030）")
 
 
 def main() -> int:
@@ -53,16 +74,18 @@ def main() -> int:
         return 1
 
     verdicts: dict[str, dict] = {}
-    with SHEET.open(encoding="utf-8-sig", newline="") as f:
-        for row in csv.DictReader(f):
-            qid = (row.get("qid") or "").strip()
-            if not qid:
-                continue
-            verdicts[qid] = {
-                "verdict": (row.get("判定") or "").strip(),
-                "note": (row.get("备注") or "").strip(),
-                "type": (row.get("类型") or "").strip(),
-            }
+    rows, enc = read_sheet(SHEET)
+    print(f"判定表读取成功（编码 {enc}，{len(rows)} 行）")
+    for row in rows:
+        qid = (row.get("qid") or "").strip()
+        if not qid:
+            continue
+        verdicts[qid] = {
+            "verdict": (row.get("判定") or "").strip(),
+            "note": (row.get("备注") or "").strip(),
+            "type": (row.get("类型") or "").strip(),
+            "question": (row.get("问题") or "").strip(),
+        }
 
     missing = [q for q, v in verdicts.items() if v["verdict"] not in ALLOWED]
     if missing:
@@ -71,6 +94,25 @@ def main() -> int:
             print("  -", q)
         print("\n填好后重跑本脚本。")
         return 1
+
+    # 一致性校验：CSV 里的题干必须与正式集一致。
+    # 用 Excel 编辑长中文/含引号的单元格时可能出错，这一步能拦住被改坏的判定表。
+    _records_for_check = [json.loads(l) for l in QUESTIONS.open(encoding="utf-8")]
+    _qmap = {r["qid"]: r for r in _records_for_check}
+    mismatched = []
+    for qid, v in verdicts.items():
+        rec = _qmap.get(qid)
+        if not rec:
+            mismatched.append(f"{qid}: 正式集里不存在该 qid")
+        elif v["question"] and norm_space(v["question"]) != norm_space(rec["question"]):
+            mismatched.append(f"{qid}: 判定表题干与正式集不一致（Excel 可能改坏了内容）")
+    if mismatched:
+        print(f"\n[严重] 判定表与正式集对不上，共 {len(mismatched)} 条，已中止：")
+        for m in mismatched[:10]:
+            print("  -", m)
+        print("请重新导出抽检单再填。")
+        return 1
+    print("一致性校验通过：判定表与正式集逐条对应")
 
     counts = Counter(v["verdict"] for v in verdicts.values())
     by_type = Counter(v["type"] for v in verdicts.values())

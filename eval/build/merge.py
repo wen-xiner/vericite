@@ -5,7 +5,9 @@
 输入: eval/v1/normal_candidates.jsonl（286 条候选）
       eval/v1/traps.jsonl（150 条陷阱题）
 输出: eval/v1/questions.jsonl   —— 正式评测集 400 条
-      eval/v1/review_queue.jsonl —— 需人工抽检的题目清单
+      eval/v1/review_queue.jsonl —— 仍待人工抽检（status=needs_review）的题目清单，
+                                    复核完的题不再留在这里，抽检痕迹见 questions.jsonl
+                                    的 review 字段与 eval/v1/review_result.json
       eval/v1/stats.json          —— 分布统计与校验结果
 
 自检项（对应第 4 章「评测集构建」要交代的可信度）:
@@ -477,7 +479,11 @@ def main() -> int:
     with OUT.open("w", encoding="utf-8", newline="\n") as f:
         for r in records:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    need_review = [r for r in records if r["status"] != "draft"]
+    # 队列只放「还没人工看过」的题（status=needs_review）。
+    # 坑：早前这里写的是 status != "draft"，复核完的题（reviewed）会被重新塞进队列，
+    # 文件名叫「待人工抽检」却装着已复核的题，名实不符。已复核的以 review 字段为准。
+    need_review = [r for r in records if r["status"] == "needs_review"]
+    reviewed = sum(1 for r in records if r["status"] == "reviewed")
     with REVIEW.open("w", encoding="utf-8", newline="\n") as f:
         for r in need_review:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
@@ -485,6 +491,7 @@ def main() -> int:
 
     print(f"\n已写出: {OUT}（{len(records)} 条）")
     print(f"已写出: {REVIEW}（待人工抽检 {len(need_review)} 条）")
+    print(f"人工复核完成: {reviewed} 条")
     print(f"已写出: {STATS}")
     return 0
 
