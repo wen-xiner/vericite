@@ -30,6 +30,9 @@ experiments/runs/
 # 核验缓存入库（判定可复现的依据）；cache 下的日志、临时备份不入库
 experiments/cache/*
 !experiments/cache/arxiv_exists.json
+# 二次核验结果：94 个「查无此文」标题的放宽检索复核留痕（哪个找到了真实对应）。
+# 重跑要再花一次 arXiv 配额（单日累计限流，见 README），且 README 引用了它的统计，故入库。
+!experiments/cache/title_second_pass.json
 
 # 作废实验的归档：prompt 示例 ID 泄漏导致污染的旧基线（口径A/B 各 400 条）。
 # 仅本地留证（复现「prompt 里的示例字符串会出现在输出里」这一现象），不入库。
