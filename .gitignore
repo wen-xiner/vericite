@@ -27,6 +27,18 @@ corpus/*
 experiments/runs/
 *.log
 
+# 核验缓存入库（判定可复现的依据）；cache 下的日志、临时备份不入库
+experiments/cache/*
+!experiments/cache/arxiv_exists.json
+
+# 作废实验的归档：prompt 示例 ID 泄漏导致污染的旧基线（口径A/B 各 400 条）。
+# 仅本地留证（复现「prompt 里的示例字符串会出现在输出里」这一现象），不入库。
+experiments/_archive_*/
+
+# 逐题判定的最终快照：内容与 judged.jsonl 等价，可由 run_eval.py 再生，不入库
+# （judged.jsonl 要入库 —— 它含 400 次判官调用的留痕，重跑要花 API 钱）
+experiments/**/per_question.jsonl
+
 # 构建脚本的断点/进度文件（可再生产物，不入库）
 eval/v1/.*
 *.tmp
