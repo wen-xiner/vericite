@@ -33,6 +33,9 @@ experiments/cache/*
 # 二次核验结果：94 个「查无此文」标题的放宽检索复核留痕（哪个找到了真实对应）。
 # 重跑要再花一次 arXiv 配额（单日累计限流，见 README），且 README 引用了它的统计，故入库。
 !experiments/cache/title_second_pass.json
+# 标题对语义判官结果：exists_variant 那一栏的佐证（判官判定 + 与人工复核的一致率）。
+# 重跑要花 API 钱，且 README 引用了它的数字，故入库。
+!experiments/cache/title_pair_judge.json
 
 # 作废实验的归档：prompt 示例 ID 泄漏导致污染的旧基线（口径A/B 各 400 条）。
 # 仅本地留证（复现「prompt 里的示例字符串会出现在输出里」这一现象），不入库。

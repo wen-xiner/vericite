@@ -1,0 +1,128 @@
+{
+  "chain of natural language inference for reducing large language model hallucinations": {
+    "same_paper": true,
+    "reason": "标题B仅比标题A多出'Ungrounded'一词，属于副标题/修饰词省略，指向同一篇论文。",
+    "model_title": "Chain of Natural Language Inference for Reducing Large Language Model Hallucinations",
+    "candidate": "Chain of Natural Language Inference for Reducing Large Language Model Ungrounded Hallucinations",
+    "f1": 0.947
+  },
+  "sam rag self adaptive multimodal retrieval augmented generation": {
+    "same_paper": true,
+    "reason": "标题A在标题B前加了系统名缩写前缀SAM-RAG，其余部分完全一致，指向同一篇论文。",
+    "model_title": "SAM-RAG: Self-adaptive Multimodal Retrieval-Augmented Generation",
+    "candidate": "Self-adaptive Multimodal Retrieval-Augmented Generation",
+    "f1": 0.857
+  },
+  "self adaptive self adaptive retrieval augmented generation": {
+    "same_paper": false,
+    "reason": "标题A缺少关键实词Multimodal，指向的是通用RAG而非多模态RAG，贡献/方法不同。",
+    "model_title": "Self-adaptive / Self-adaptive Retrieval-Augmented Generation",
+    "candidate": "Self-adaptive Multimodal Retrieval-Augmented Generation",
+    "f1": 0.769
+  },
+  "apeft atomic preference enhanced factuality tuning for large language models": {
+    "same_paper": true,
+    "reason": "标题B是同一篇论文的真实标题，A用自造缩写APEFT替换了副标题前缀，核心副标题'Atomic Preference Enhanced Factuality Tuning for Large Language Models'完全一致。",
+    "model_title": "APEFT: Atomic Preference Enhanced Factuality Tuning for Large Language Models",
+    "candidate": "Beyond Under-Alignment: Atomic Preference Enhanced Factuality Tuning for Large Language Models",
+    "f1": 0.842
+  },
+  "climategpt towards ai synthesizing interdisciplinary climate change research": {
+    "same_paper": true,
+    "reason": "两标题仅副标题语序不同（'Climate Change Research' 与 'Research on Climate Change'），主标题 ClimateGPT 完全一致，指向同一篇论文。",
+    "model_title": "ClimateGPT: Towards AI Synthesizing Interdisciplinary Climate Change Research",
+    "candidate": "ClimateGPT: Towards AI Synthesizing Interdisciplinary Research on Climate Change",
+    "f1": 1.0
+  },
+  "maven fact a large scale factuality detection dataset for events": {
+    "same_paper": true,
+    "reason": "标题仅语序和大小写/连字符有差异，核心词MAVEN-Fact、Large-scale、Event Factuality Detection Dataset完全对应，指向同一篇论文。",
+    "model_title": "MAVEN-FACT: A Large-Scale Factuality Detection Dataset for Events",
+    "candidate": "MAVEN-Fact: A Large-scale Event Factuality Detection Dataset",
+    "f1": 0.875
+  },
+  "qa rag a hybrid retrieval augmented generation framework for question answering": {
+    "same_paper": false,
+    "reason": "标题A为QA-RAG通用问答框架，标题B为RAG-BioQA生物医学长文本问答，专名和领域均不同，指向不同论文。",
+    "model_title": "QA-RAG: A Hybrid Retrieval-Augmented Generation Framework for Question Answering",
+    "candidate": "RAG-BioQA: A Retrieval-Augmented Generation Framework for Long-Form Biomedical Question Answering",
+    "f1": 0.7
+  },
+  "towards fine grained citation in verifiable generation": {
+    "same_paper": true,
+    "reason": "两标题均指向同一篇关于可验证生成中细粒度（子句级）引用的论文，核心主题与贡献一致，仅措辞和语序不同。",
+    "model_title": "Towards Fine-Grained Citation in Verifiable Generation",
+    "candidate": "Verifiable Generation with Subsentence-Level Fine-Grained Citations",
+    "f1": 0.667
+  },
+  "hallucination in natural language generation a survey": {
+    "same_paper": true,
+    "reason": "标题仅语序和介词不同（'Hallucination in NLG: A Survey' 与 'Survey of Hallucination in NLG'），指向同一篇综述。",
+    "model_title": "Hallucination in Natural Language Generation: A Survey",
+    "candidate": "Survey of Hallucination in Natural Language Generation",
+    "f1": 1.0
+  },
+  "fence a framework for evaluating the factual consistency of abstractive summarization": {
+    "same_paper": false,
+    "reason": "标题A为FenCE框架，标题B为ClozE框架，专名和核心方法不同，指向不同论文。",
+    "model_title": "FenCE: A Framework for Evaluating the Factual Consistency of Abstractive Summarization",
+    "candidate": "Just ClozE! A Novel Framework for Evaluating the Factual Consistency Faster in Abstractive Summarization",
+    "f1": 0.75
+  },
+  "hetarag hybrid retrieval augmented generation with heterogeneous knowledge bases": {
+    "same_paper": true,
+    "reason": "两者均以 HetaRAG 为系统名，核心含义一致（Hybrid Retrieval-Augmented Generation + 异构知识库/数据存储），仅副标题措辞略有差异。",
+    "model_title": "HetaRAG: Hybrid Retrieval-Augmented Generation with Heterogeneous Knowledge Bases",
+    "candidate": "HetaRAG: Hybrid Deep Retrieval-Augmented Generation across Heterogeneous Data Stores",
+    "f1": 0.667
+  },
+  "ircot interleaving retrieval with chain of thought reasoning for knowledge intensive multi step questions": {
+    "same_paper": true,
+    "reason": "标题A在标题B前加了系统缩写前缀IRCoT，其余内容完全一致，指向同一篇论文。",
+    "model_title": "IRCoT: Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions",
+    "candidate": "Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions",
+    "f1": 0.952
+  },
+  "mitigating hallucination in large vision language models via dynamic trust calibration": {
+    "same_paper": false,
+    "reason": "标题A的核心方法为'Dynamic Trust Calibration'，标题B为'Adaptive Attention Calibration'，关键实词不同，指向不同方法。",
+    "model_title": "Mitigating Hallucination in Large Vision-Language Models via Dynamic Trust Calibration",
+    "candidate": "Mitigating Hallucination in Large Vision-Language Models via Adaptive Attention Calibration",
+    "f1": 0.778
+  },
+  "apeft atomic preference enhanced factuality tuning": {
+    "same_paper": true,
+    "reason": "标题A是标题B的缩写形式，APEFT对应Atomic Preference Enhanced Factuality Tuning，且省略了副标题'for Large Language Models'。",
+    "model_title": "APEFT（Atomic Preference Enhanced Factuality Tuning）",
+    "candidate": "Beyond Under-Alignment: Atomic Preference Enhanced Factuality Tuning for Large Language Models",
+    "f1": 0.625
+  },
+  "federated learning for retrieval augmented generation": {
+    "same_paper": false,
+    "reason": "标题A是泛化的主题表述，标题B是具体方法论文，关键实词（Federated Embedding Learning、Privacy-Preserving、Localized）不同，指向不同贡献。",
+    "model_title": "Federated Learning for Retrieval-Augmented Generation",
+    "candidate": "Privacy-Preserving Federated Embedding Learning for Localized Retrieval-Augmented Generation",
+    "f1": 0.714
+  },
+  "s song in the ai ocean a survey on hallucination in large language models": {
+    "same_paper": true,
+    "reason": "标题A仅漏掉了首词Siren's，其余部分与标题B完全一致，指向同一篇论文。",
+    "model_title": "s Song in the AI Ocean: A Survey on Hallucination in Large Language Models",
+    "candidate": "Siren's Song in the AI Ocean: A Survey on Hallucination in Large Language Models",
+    "f1": 0.941
+  },
+  "data importance learning retrieval augmented llm": {
+    "same_paper": true,
+    "reason": "标题A是标题B核心短语的简写，均指向同一篇关于通过数据重要性学习改进检索增强大语言模型的论文。",
+    "model_title": "data importance learning + retrieval-augmented LLM",
+    "candidate": "Improving Retrieval-Augmented Large Language Models via Data Importance Learning",
+    "f1": 0.667
+  },
+  "alce enabling large language models to generate text with citations": {
+    "same_paper": true,
+    "reason": "标题A在标题B前加了系统名缩写前缀ALCE，其余完全一致，指向同一篇论文。",
+    "model_title": "ALCE: Enabling Large Language Models to Generate Text with Citations",
+    "candidate": "Enabling Large Language Models to Generate Text with Citations",
+    "f1": 0.933
+  }
+}
