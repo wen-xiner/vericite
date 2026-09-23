@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22T14:22:55",
+  "generated": "2026-09-23T10:33:06",
   "answers_file": "experiments\\baseline_llm_strict\\answers.jsonl",
   "system": "baseline_llm",
   "questions_total": 400,
@@ -22,7 +22,7 @@
     "answer_accuracy": 0.024,
     "answer_accuracy_lenient": 0.04,
     "citation_hit_rate": 0.052,
-    "hallucination_rate": 0.272,
+    "hallucination_rate": 0.264,
     "support_no": 61,
     "attribution_no": 39
   },
@@ -47,13 +47,13 @@
     "susceptibility_rate": 0.22
   },
   "overall": {
-    "hallucination_rate": 0.2525,
+    "hallucination_rate": 0.2475,
     "failure_modes": {
       "citation_miss": 237,
       "answer_mismatch": 240,
       "unsupported_claim": 61,
       "wrong_attribution": 39,
-      "nonexistent_citation": 47,
+      "nonexistent_citation": 43,
       "induced_by_trap": 1
     }
   },
@@ -72,7 +72,7 @@
     },
     "method": {
       "n": 85,
-      "hallucination_rate": 0.1882
+      "hallucination_rate": 0.1765
     },
     "mismatch_probe": {
       "n": 40,
@@ -84,7 +84,7 @@
     },
     "numeric": {
       "n": 45,
-      "hallucination_rate": 0.3778
+      "hallucination_rate": 0.3556
     },
     "unsupported_probe": {
       "n": 50,
@@ -94,7 +94,7 @@
   "by_difficulty": {
     "easy": {
       "n": 202,
-      "hallucination_rate": 0.3267
+      "hallucination_rate": 0.3218
     },
     "hard": {
       "n": 40,
@@ -102,17 +102,17 @@
     },
     "medium": {
       "n": 158,
-      "hallucination_rate": 0.2025
+      "hallucination_rate": 0.1962
     }
   },
   "layer1_existence": {
-    "fabricated": 47,
+    "fabricated": 43,
     "unverified": 0,
     "by_status": {
       "exists_outside": 345,
-      "fabricated": 52,
+      "fabricated": 47,
       "in_corpus": 163,
-      "exists_variant": 4
+      "exists_variant": 6
     },
     "status_label": {
       "in_corpus": "语料内",

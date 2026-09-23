@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22T14:12:33",
+  "generated": "2026-09-23T10:33:05",
   "answers_file": "experiments\\baseline_llm\\answers.jsonl",
   "system": "baseline_llm",
   "questions_total": 400,
@@ -52,7 +52,7 @@
       "unsupported_claim": 169,
       "wrong_attribution": 180,
       "citation_miss": 201,
-      "nonexistent_citation": 86,
+      "nonexistent_citation": 81,
       "answer_mismatch": 167,
       "induced_by_trap": 54
     }
@@ -106,12 +106,12 @@
     }
   },
   "layer1_existence": {
-    "fabricated": 86,
+    "fabricated": 81,
     "unverified": 0,
     "by_status": {
       "exists_outside": 534,
-      "fabricated": 106,
-      "exists_variant": 10,
+      "fabricated": 94,
+      "exists_variant": 13,
       "in_corpus": 218
     },
     "status_label": {

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated": "2026-09-22",
+  "updated": "2026-09-23",
   "note": "VeriCite 引用存在性核验缓存。ids/titles：true=arXiv 上存在，false=确认不存在。title_variant：精确检索落空后，用标题核心词宽松检索得到的最相似真实标题及其词面相似度。",
   "ids": {
     "1809.09600": true,
@@ -1764,7 +1764,11 @@
       "match": "Verifiable Generation with Subsentence-Level Fine-Grained Citations",
       "f1": 0.667,
       "checked": true,
-      "similar": false
+      "similar": true,
+      "second_pass": {
+        "probe": "AND3",
+        "note": "核心词集合完全一致（fine-grained / citation / verifiable / generation），仅语序不同"
+      }
     },
     "the curious case of hallucinatory un answerability finding truths in the hidden states of overconfident large language models": {
       "match": null,
@@ -1803,10 +1807,14 @@
       "similar": true
     },
     "hetarag hybrid retrieval augmented generation with heterogeneous knowledge bases": {
-      "match": "HeteRAG: A Heterogeneous Retrieval-augmented Generation Framework with Decoupled Knowledge Representations",
-      "f1": 0.588,
+      "match": "HetaRAG: Hybrid Deep Retrieval-Augmented Generation across Heterogeneous Data Stores",
+      "f1": 0.667,
       "checked": true,
-      "similar": false
+      "similar": true,
+      "second_pass": {
+        "probe": "AND3",
+        "note": "自造词 HetaRAG 对上，hetarag + hybrid + heterogeneous 三项吻合"
+      }
     },
     "the company was founded in 1998 and is headquartered in berlin": {
       "match": null,
@@ -1905,10 +1913,14 @@
       "similar": false
     },
     "mitigating hallucination in large vision language models via dynamic trust calibration": {
-      "match": null,
-      "f1": 0.0,
+      "match": "Mitigating Hallucination in Large Vision-Language Models via Adaptive Attention Calibration",
+      "f1": 0.778,
       "checked": true,
-      "similar": false
+      "similar": true,
+      "second_pass": {
+        "probe": "AND3",
+        "note": "前缀逐字一致，仅结尾 mechanism 不同（via Dynamic… vs via Adaptive Attention）"
+      }
     },
     "mitigating object hallucination in large vision language models via image aware decoding": {
       "match": "Efficient Contrastive Decoding with Probabilistic Hallucination Detection - Mitigating Hallucinations in Large Vision Language Models -",
@@ -2004,7 +2016,11 @@
       "match": "Beyond Under-Alignment: Atomic Preference Enhanced Factuality Tuning for Large Language Models",
       "f1": 0.625,
       "checked": true,
-      "similar": false
+      "similar": true,
+      "second_pass": {
+        "probe": "AND3",
+        "note": "长词组 atomic preference enhanced factuality tuning 完全一致，APEFT 是对应缩写"
+      }
     },
     "federated learning for retrieval augmented generation": {
       "match": "Privacy-Preserving Federated Embedding Learning for Localized Retrieval-Augmented Generation",
@@ -2028,7 +2044,11 @@
       "match": "Improving Retrieval-Augmented Large Language Models via Data Importance Learning",
       "f1": 0.667,
       "checked": true,
-      "similar": false
+      "similar": true,
+      "second_pass": {
+        "probe": "AND3",
+        "note": "独特词组 data importance learning 逐字一致"
+      }
     },
     "rlmrec representation learning with large language models": {
       "match": null,
