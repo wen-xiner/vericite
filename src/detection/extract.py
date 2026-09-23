@@ -27,8 +27,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from common.textutil import (find_arxiv_ids, has_cjk, norm_space,  # noqa: E402
-                             norm_title, strip_latex)
+from common.textutil import (content_tokens, find_arxiv_ids, has_cjk,  # noqa: E402
+                             norm_space, norm_title, strip_latex)
 
 OPEN_Q = "\u300a\u300c\u300e\u201c\"'\u2018"
 CLOSE_Q = "\u300b\u300d\u300f\u201d\"'\u2019"
@@ -50,8 +50,32 @@ def looks_like_title(raw: str) -> bool:
         return False
     if find_arxiv_ids(raw):          # 里面带 arXiv ID，多半是在列举引用而不是标题
         return False
+    # 基础门槛沿用旧规则（所有英文词 ≥ 4，含停用词）。
+    # 注意别改成 count(content_tokens) —— 连字符词会被拆开、词数反而变多，
+    # 等于悄悄放宽（实测 Source-Aware Contrastive Decoding 从 3 词变 4 词就漏进来了）。
     words = re.findall(r"[A-Za-z][A-Za-z'\-]+", raw)
-    return len(words) >= 4
+    if len(words) < 4:
+        return False
+    # —— 以下三条是新增的排除规则，只收紧、不放宽 ——
+    # ① 以**单个**句号收尾的是整句，不是标题。实测模型举例用的句子：
+    #    「摘要句：“The company was founded in 1998 and is headquartered in Berlin.”」
+    #    这种串送 arXiv 必然 0 命中 → 判成「编造」→ 凭空造出幻觉。
+    #    注意：省略号（"..." / "…"）表示标题被模型截断，**必须保留** ——
+    #    实测 `CommunityKG-RAG: A Retrieval-Augmented Generation Framework...`
+    #    是合法标题，被旧写法（`raw.endswith(".")`）误删过一版，属假阴性。
+    core = raw.rstrip()
+    if re.search(r"(?<!\.)\.$", core):
+        return False
+    # ② 模型复述指令的祈使句（实测「review the previous answer against the following criteria…」）
+    if re.match(r"^(review|using|rewrite|please|note|remember|ensure|make sure|"
+                r"answer the|based on|read the)\b", raw, re.I):
+        return False
+    # ③ 全小写、无冒号、实词又少的串，多半是正文短语碎片而非论文标题：
+    #    「target context window size」「who is the ceo of x」「improving answer accuracy by up to 20%」
+    #    真论文标题基本都有大写（Title Case）或「主标题: 副标题」的冒号结构。
+    if raw == raw.lower() and ":" not in raw and len(content_tokens(raw)) < 6:
+        return False
+    return True
 
 
 @dataclass
