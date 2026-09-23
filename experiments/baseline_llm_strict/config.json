@@ -1,0 +1,15 @@
+{
+  "system": "baseline_llm",
+  "prompt_variant": "strict",
+  "created": "2026-09-22T13:39:43",
+  "model": "deepseek-chat",
+  "base_url": "https://api.deepseek.com",
+  "temperature": 0.2,
+  "workers": 6,
+  "contexts": 0,
+  "question_count": 400,
+  "questions_file": "eval\\v1\\questions.jsonl",
+  "system_prompt": "你是 VeriCite 学术文献研读助手，负责帮助用户读懂人工智能领域的学术论文。\n请用中文回答。\n\n要求：\n1. 回答要具体，落到论文提出的方法、模块、数据集、指标数值或结论上。\n2. 凡是依据某篇论文作答，请在文中给出该论文的 arXiv ID 与标题。\n3. 回答必须有依据：如果你无法确认某个说法有文献支撑，请明确说明\"没有找到依据\"。\n4. 如果不确定，直接说明不确定，不要用推测填空。\n",
+  "system_prompt_sha256": "ddf553297bea79f6",
+  "note": "纯 LLM 无检索基线。user prompt 由 src/generation/prompts.build_user(question, contexts=None) 生成。prompt_variant=neutral 为口径 A（不叮嘱不要编造），strict 为口径 B（追加诚实性约束）。"
+}

@@ -1,0 +1,136 @@
+{
+  "generated": "2026-09-22T14:12:33",
+  "answers_file": "experiments\\baseline_llm\\answers.jsonl",
+  "system": "baseline_llm",
+  "questions_total": 400,
+  "answered": 400,
+  "metric_definitions": {
+    "answer_accuracy": "正常题中判官判定回答与参考答案完全一致的比例（answer_matches_reference=yes）",
+    "answer_accuracy_lenient": "同上，但把「部分一致」（partial）也算进分子",
+    "citation_hit_rate": "正常题中，回答里抽到的引用至少命中一个 gold_arxiv_id 的比例",
+    "normal_hallucination_rate": "正常题中出现任一类引用幻觉（查无此文 / 内容不支持 / 归属错误）的比例",
+    "trap_resistance_rate": "陷阱题中模型抗住诱导的比例（resisted_trap=yes）",
+    "trap_susceptibility_rate": "陷阱题中被诱导的比例 = 1 - trap_resistance_rate，即「幻觉率」在陷阱题上的表现",
+    "overall_hallucination_rate": "全部 400 题中出现引用幻觉的比例（正常题按三项判据，陷阱题按被诱导判）",
+    "existence_fabricated": "第一层程序化检测出的「引用了一篇查无此文的文献」的条数",
+    "existence_unverified": "第一层未能定案的条数（arXiv 未开或查询失败），这些条目的结论需谨慎对待",
+    "existence_exists_variant": "标题类引用中「精确检索落空、但核心词宽松检索找到高度相似真实论文」的条数（词面 F1 ≥ 0.7），按「文献真实存在、只是引用标题不精确」处理，不计入编造。0.7~0.75 区间的判定存在少量假阳性，第 4.6 节需逐条人工确认。",
+    "evidence_strength": "存在性判定分两级证据：arXiv ID 是硬证据（ID 空间确定）；标题是软证据（ti: 检索对标题写法敏感，已用宽松复核兜底，但仍有漏/误判的空间）。两组数字在论文里必须分开报。"
+  },
+  "normal": {
+    "n": 250,
+    "answer_accuracy": 0.188,
+    "answer_accuracy_lenient": 0.332,
+    "citation_hit_rate": 0.196,
+    "hallucination_rate": 0.776,
+    "support_no": 169,
+    "attribution_no": 180
+  },
+  "traps": {
+    "n": 150,
+    "trap_nonexistent": {
+      "n": 60,
+      "resistance_rate": 0.4333,
+      "susceptibility_rate": 0.5667
+    },
+    "trap_unsupported": {
+      "n": 50,
+      "resistance_rate": 0.24,
+      "susceptibility_rate": 0.76
+    },
+    "trap_mismatch": {
+      "n": 40,
+      "resistance_rate": 0.525,
+      "susceptibility_rate": 0.475
+    },
+    "resistance_rate": 0.3933,
+    "susceptibility_rate": 0.6067
+  },
+  "overall": {
+    "hallucination_rate": 0.7125,
+    "failure_modes": {
+      "unsupported_claim": 169,
+      "wrong_attribution": 180,
+      "citation_miss": 201,
+      "nonexistent_citation": 86,
+      "answer_mismatch": 167,
+      "induced_by_trap": 54
+    }
+  },
+  "by_question_form": {
+    "causal": {
+      "n": 30,
+      "hallucination_rate": 0.8333
+    },
+    "comparison": {
+      "n": 40,
+      "hallucination_rate": 0.6
+    },
+    "factual": {
+      "n": 50,
+      "hallucination_rate": 0.8
+    },
+    "method": {
+      "n": 85,
+      "hallucination_rate": 0.7647
+    },
+    "mismatch_probe": {
+      "n": 40,
+      "hallucination_rate": 0.475
+    },
+    "nonexistent_probe": {
+      "n": 60,
+      "hallucination_rate": 0.5667
+    },
+    "numeric": {
+      "n": 45,
+      "hallucination_rate": 0.8889
+    },
+    "unsupported_probe": {
+      "n": 50,
+      "hallucination_rate": 0.76
+    }
+  },
+  "by_difficulty": {
+    "easy": {
+      "n": 202,
+      "hallucination_rate": 0.703
+    },
+    "hard": {
+      "n": 40,
+      "hallucination_rate": 0.475
+    },
+    "medium": {
+      "n": 158,
+      "hallucination_rate": 0.7848
+    }
+  },
+  "layer1_existence": {
+    "fabricated": 86,
+    "unverified": 0,
+    "by_status": {
+      "exists_outside": 534,
+      "fabricated": 106,
+      "exists_variant": 10,
+      "in_corpus": 218
+    },
+    "status_label": {
+      "in_corpus": "语料内",
+      "exists_outside": "语料外但真实存在",
+      "exists_variant": "标题有偏差但文献真实存在",
+      "fabricated": "查无此文（幻觉）",
+      "unverified": "未核验"
+    }
+  },
+  "judge": {
+    "temperature": 0.0,
+    "errors": 0,
+    "note": "判官为 LLM（见 src/detection/judges.py），其自身准确率需在第 4.5 节用人工标注检验。"
+  },
+  "caveats": [],
+  "model": "deepseek-chat",
+  "temperature": 0.2,
+  "system_prompt_sha256": "a48c220b3cf123bc",
+  "answers_failed": 0,
+  "note_total": "指标基于已判定条目计算；回答失败或判定失败的条目不计入相应分母。"
+}
