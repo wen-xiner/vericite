@@ -1,0 +1,33 @@
+{
+  "round": 1,
+  "date": "2026-09-22",
+  "reviewer": "温惠锦",
+  "verdict_source": "人工逐条判定（review_sheet.csv）",
+  "scope": {
+    "sampled": 40,
+    "full_set": 400,
+    "ratio": 0.1,
+    "sampling": "按类别分层随机抽样（正常题 25 / T1 6 / T2 5 / T3 4），随机种子 20260922",
+    "note": "本次人工抽检仅覆盖抽样到的题目；未抽到的题目只经过程序化校验（逐字/arXiv 核验），不得表述为「全部人工复核」。"
+  },
+  "counts": {
+    "通过": 40,
+    "修改": 0,
+    "废弃": 0
+  },
+  "pass_rate": 1.0,
+  "by_type_sampled": {
+    "normal": 25,
+    "trap_nonexistent": 6,
+    "trap_unsupported": 5,
+    "trap_mismatch": 4
+  },
+  "by_type_passed": {
+    "normal": 25,
+    "trap_nonexistent": 6,
+    "trap_unsupported": 5,
+    "trap_mismatch": 4
+  },
+  "failed_qids": [],
+  "questions_updated": 40
+}

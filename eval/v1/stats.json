@@ -60,7 +60,8 @@
     "cs.HC": 2
   },
   "by_status": {
-    "draft": 400
+    "reviewed": 40,
+    "draft": 360
   },
   "normal_candidates_pool": 286,
   "normal_dropped": 36,
@@ -75,6 +76,20 @@
     "trap_nonexistent": true,
     "trap_unsupported": true,
     "trap_mismatch": true
+  },
+  "human_review": {
+    "round": 1,
+    "date": "2026-09-22",
+    "sampled": 40,
+    "full_set": 400,
+    "ratio": 0.1,
+    "counts": {
+      "通过": 40,
+      "修改": 0,
+      "废弃": 0
+    },
+    "pass_rate": 1.0,
+    "scope_note": "本次人工抽检仅覆盖抽样到的题目；未抽到的题目只经过程序化校验（逐字/arXiv 核验），不得表述为「全部人工复核」。"
   },
   "remote_recheck": {
     "ids_checked": 30,
