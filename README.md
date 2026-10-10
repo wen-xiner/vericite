@@ -18,7 +18,9 @@ vericite/
 ├── data/                # arXiv 原始数据、解析后的文本
 │   ├── arxiv_raw.jsonl      # 论文元数据（ID/标题/摘要/作者/分类）
 │   └── raw/                 # arXiv API 原始 Atom XML 缓存
-├── corpus/              # 切分后的语料 + 向量库
+├── corpus/              # 向量库产物 + 本地模型权重（均不入库：体积大，可由脚本重建）
+│   ├── index/               # faiss 索引 + 元数据（build_index.py 生成，CPU 约 90 秒可重建）
+│   └── models/bge-m3/       # 本地嵌入模型权重（约 2.3GB，走 hf-mirror 下载）
 ├── eval/                # 评测集
 │   ├── schema.json          # 单条记录的结构定义（字段/枚举/标签期望）
 │   ├── build/               # 评测集构建脚本（拉数据 → 出题 → 合并自检）
@@ -39,11 +41,13 @@ vericite/
 ## 技术栈
 
 - **语言**：Python
-- **数据链路**：arXiv API → PDF 解析（GROBID / pdfplumber 回退）→ 文档切分 → SBERT 嵌入入库
+- **数据链路**：arXiv API（143 篇，已完成）→ 文档切分 → 向量嵌入入库
+  - 当前档位 **摘要级**：文档单元 = 一篇论文，向量取「标题 + 摘要」；全文 PDF 解析留作对照实验
+  - PDF 解析器：本机无 Docker / 无 Java，GROBID 跑不起来，预留 pdfplumber 路线
 - **问答链路**：向量召回（top-k）→ 重排序 → 引用约束 Prompt → LLM 生成 → 幻觉检测
 - **LLM**：API 调用（DeepSeek 或同类，OpenAI 兼容接口）
-- **嵌入**：sentence-transformers
-- **向量库**：FAISS / Chroma / SQLite（待定）
+- **嵌入**：sentence-transformers + `BAAI/bge-m3`（**多语言**——中文问句检索英文语料，见"知识库与检索"）
+- **向量库**：FAISS（`faiss-cpu`，`IndexFlatIP`）
 - **Web 演示层**：Flask / FastAPI
 
 ## 评测集构建
@@ -310,6 +314,71 @@ python src/experiments/judge_title_pairs.py --summary    # 只看与人工的一
 > 教训：prompt 里当示例的字符串，一定会出现在输出里。凡是要统计模型行为的东西
 > （ID、标题、数值、格式），示例都必须用明显不可能被当成真值的形式。
 
+## 知识库与检索
+
+### 当前档位：摘要级（document-level）
+
+语料 143 篇（`data/arxiv_raw.jsonl`），**一个文档单元 = 一篇论文**，向量取自「标题 + 摘要」。
+链路：`build_index.py` 编码入库 → `retriever.py` 向量召回。产物落 `corpus/index/<tag>/`
+（`index.faiss` + `meta.jsonl` + `config.json`；config 里记了**语料 sha256**，保证指标能溯源到具体一版语料）。
+
+**为什么先做摘要级、不先解析 PDF**：`eval/v1` 的 400 条题里，250 道正常题的证据字段带
+`verification.evidence_verbatim_in_abstract = True`（2026-09-23 全量核实：250 条全为 True，
+另抽 60 条做英文片段-摘要子串比对，**60/60 命中**）—— **出题粒度本来就是摘要**。
+所以先把「召回 → 生成 → 三层检测」端到端跑通，全文级 PDF 解析留作对照实验。
+
+### 技术选型（2026-09-23 定）
+
+| 项 | 选型 | 理由 |
+|---|---|---|
+| 嵌入模型 | `BAAI/bge-m3`（1024 维） | **必须多语言**——评测问句是中文、语料是英文，纯 en / 纯 zh 模型都不适用 |
+| 向量库 | `faiss-cpu`（`IndexFlatIP`） | 向量已 L2 归一化，内积即余弦；大纲点名的可选项之一 |
+| 模型来源 | `corpus/models/bge-m3/`（本地目录） | `huggingface.co` 直连超时，权重走 `hf-mirror.com` 下到本地 |
+| PDF 解析 | **暂未启用** | 本机无 Docker / 无 Java，GROBID 跑不起来；预留 pdfplumber 路线 |
+
+### 召回结果（摘要级，top-k = 10）
+
+| 指标 | 值 |
+|---|---|
+| Recall@1 | **93.2%** |
+| Recall@3 | 97.4% |
+| Recall@5 | 97.7% |
+| Recall@10 | 98.2% |
+| MRR | 0.9535 |
+| 正常题 | **248/250 = 99.2%** |
+
+（统计口径 = 340 条带 `gold_arxiv_ids` 的题；60 条伪文献题没有金标来源，不参与召回评估。
+原始结果见 `experiments/retrieval/recall_abstract.json`。）
+
+> ⚠️ **这个高召回不能用来论证「检索策略好」。** 出题证据的粒度是摘要，知识库的粒度也是摘要，
+> 两者同源 → 检索天然偏易，Recall@1 93% 是**装置造成的天花板效应**，不是模型/检索器的功劳。
+> 要论证切分粒度、top-k、重排序的优劣，必须上**全文级知识库**做对照。
+> 这一条必须写进论文，否则就是拿装置的假象冒充结论。
+
+未召回的 6 条（逐条留痕在结果 JSON 的 `misses` 里）：2 条正常题（`N-0097` / `N-0195`）
++ 4 条 `trap_mismatch`。「张冠李戴」题召回的不是 gold —— 这**符合该题型的设计**：
+问题描述的是 A 的内容却指向 B，按内容召回自然会命中 A。
+
+### 复现
+
+```bash
+# 1. 依赖（必须绕开沙箱代理，否则 PyPI 镜像源会返回空、pip 误报"找不到包"）
+env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY \
+  pip install faiss-cpu sentence-transformers
+
+# 2. 模型权重下到 corpus/models/bge-m3/（约 2.3GB，huggingface.co 直连不通，走 hf-mirror）
+
+# 3. 建索引（143 篇摘要，CPU 约 90 秒）
+python src/retrieval/build_index.py
+
+# 4. 召回评估（Recall@k / MRR，按题型分组）
+python src/retrieval/retriever.py --eval --top-k 10 \
+  --json-out experiments/retrieval/recall_abstract.json
+
+# 单条查询
+python src/retrieval/retriever.py --query "检索增强生成如何缓解大模型幻觉？" --top-k 5
+```
+
 ## 基线结果
 
 纯 LLM 无检索基线，两套口径各 400 题（正常题 250 + 陷阱题 150），模型 `deepseek-chat`、
@@ -388,9 +457,14 @@ temperature 0.2、同一套 system prompt（仅"是否追加诚实性约束"不�
   与人工复核一致率 16/18 = 88.9%（`src/experiments/judge_title_pairs.py`）
 - [ ] 第 4.6 节需要**定义"同一篇"的口径**：判官与人工的 2 条分歧全在"标题能否唯一确定"
   vs "被引文献是否存在"这一层。口径定了才能报该态的最终精度（人工口径 83% / 判官严口径 72%）
-- [ ] 知识库构建（PDF 拉取解析 / 切分 / 嵌入 / 向量库）
-- [ ] 检索与生成链路（召回 / 重排序 / 引用约束）
-- [ ] RAG 对比与消融实验
+- [x] 知识库构建（**摘要级**）：143 篇语料向量化入库（`BAAI/bge-m3` + `faiss-cpu`）
+- [x] 向量召回（top-k）：Recall@1 93.2% / Recall@5 97.7% / MRR 0.9535（摘要级，
+  结果见 `experiments/retrieval/recall_abstract.json`；**含装置局限说明**，见"知识库与检索"）
+- [ ] 知识库构建（**全文级**）：PDF 拉取解析 + 切分，与摘要级做对照
+  —— 摘要级召回偏高是装置所致，**论证检索策略优劣必须靠全文级这一档**
+- [ ] 重排序
+- [ ] RAG 问答链路（检索材料注入 prompt + 生成）
+- [ ] RAG 与纯 LLM 对比、消融实验（切分粒度 / top-k / 重排序）
 - [ ] Web 演示层
 - [ ] 开题报告与论文各章
 
