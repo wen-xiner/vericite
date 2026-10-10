@@ -1,0 +1,85 @@
+{
+  "n_questions": 340,
+  "index_tag": "bge-m3-title_abstract",
+  "model": "BAAI/bge-m3",
+  "doc_mode": "title_abstract",
+  "n_docs": 143,
+  "dim": 1024,
+  "top_k": 10,
+  "source_sha256": "13c66c8b1f180390edc71230958d81fefb85fdbfc2b155b0b8ed0e7b3a137a1d",
+  "index_built_at": "2026-09-23T06:38:19+00:00",
+  "recall_at": {
+    "1": 0.9324,
+    "3": 0.9735,
+    "5": 0.9765,
+    "10": 0.9824
+  },
+  "mrr": 0.9535,
+  "by_type": {
+    "normal": {
+      "hit": 248,
+      "total": 250,
+      "rate": 0.992
+    },
+    "trap_mismatch": {
+      "hit": 36,
+      "total": 40,
+      "rate": 0.9
+    },
+    "trap_unsupported": {
+      "hit": 50,
+      "total": 50,
+      "rate": 1.0
+    }
+  },
+  "misses": [
+    {
+      "qid": "N-0097",
+      "type": "normal",
+      "gold": [
+        "2510.24236"
+      ],
+      "top1": "2404.03189"
+    },
+    {
+      "qid": "N-0195",
+      "type": "normal",
+      "gold": [
+        "2506.06313"
+      ],
+      "top1": "2402.17682"
+    },
+    {
+      "qid": "T3-0011",
+      "type": "trap_mismatch",
+      "gold": [
+        "2309.01431"
+      ],
+      "top1": "2307.03027"
+    },
+    {
+      "qid": "T3-0019",
+      "type": "trap_mismatch",
+      "gold": [
+        "2506.21931"
+      ],
+      "top1": "2506.06313"
+    },
+    {
+      "qid": "T3-0034",
+      "type": "trap_mismatch",
+      "gold": [
+        "2410.11321"
+      ],
+      "top1": "2508.15253"
+    },
+    {
+      "qid": "T3-0040",
+      "type": "trap_mismatch",
+      "gold": [
+        "2410.11217"
+      ],
+      "top1": "2304.06762"
+    }
+  ]
+}
